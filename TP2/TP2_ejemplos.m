@@ -7,26 +7,26 @@ fprintf('######################################################\n')
 fprintf('#                Ejemplos para el TP2                #\n')
 fprintf('######################################################\n\n')
 fprintf('1: Uso de atan2.\n')
-fprintf('2: Plot de Transformaciones Homogéneas\n')
-fprintf('3: Usos de Transformaciones Homogéneas\n')
-OPT = input('\nOpción: ');
+fprintf('2: Plot de Transformaciones Homogneas\n')
+fprintf('3: Usos de Transformaciones Homogneas\n')
+OPT = 1; %input('\nOpcin: ');
 %=========================================================================%
 if OPT == 1
-    fprintf('> Función atan(y/x) en los 4 cuadrantes:\n')
+    fprintf('> Funcin atan(y/x) en los 4 cuadrantes:\n')
     fprintf('  atan( 1 /  1) = %d\n',atan(1/1) * 180/pi)
     fprintf('  atan(-1 /  1) = %d\n',atan(-1/1) * 180/pi)
     fprintf('  atan( 1 / -1) = %d\n',atan(1/-1) * 180/pi)
     fprintf('  atan(-1 / -1) = %d\n',atan(-1/-1) * 180/pi)
-    fprintf('  (resultados en el 1º y 4º cuadrante)\n\n')
+    fprintf('  (resultados en el 1 y 4 cuadrante)\n\n')
     
-    fprintf('> Función atan2(y, x) en los 4 cuadrantes:\n')
+    fprintf('> Funcin atan2(y, x) en los 4 cuadrantes:\n')
     fprintf('  atan2( 1, 1) = %d\n',atan2(1,1) * 180/pi)
     fprintf('  atan2(-1, 1) = %d\n',atan2(-1,1) * 180/pi)
     fprintf('  atan2( 1,-1) = %d\n',atan2(1,-1) * 180/pi)
     fprintf('  atan2(-1,-1) = %d\n',atan2(-1,-1) * 180/pi)
     fprintf('  (resultados en los 4 cuadrantes)\n')
 elseif OPT == 2
-    fprintf('> Función trplot de RTB (ver ''help trplot''):\n')
+    fprintf('> Funcin trplot de RTB (ver ''help trplot''):\n')
     
     T0 = eye(4);
     T1 = trotz(pi/4);
@@ -61,7 +61,7 @@ elseif OPT == 3
     plot([p_2D_0(1),p_2D_0(1)],[0,p_2D_0(2)],'--k')
     plot([0,p_2D_0(1)],[p_2D_0(2),p_2D_0(2)],'--k')
     
-    fprintf('> Verificar en el gráfico que las coordenadas p_2D_1\n')
+    fprintf('> Verificar en el grfico que las coordenadas p_2D_1\n')
     fprintf('  sean las correctas en el sistema {1}.')
 end
 %=========================================================================%
