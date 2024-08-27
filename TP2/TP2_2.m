@@ -5,8 +5,8 @@ b = [0;0;1;1];
 c = [1;0.5;0.3;1];
 %Crear la matriz de rotación utilizando trotz con el ángulo en radianes
 Ma = trotz(343*pi/180);
-Mb = trotz(35*pi/180);
-Mc = trotz(90*pi/180);
+Mb = trotx(35*pi/180);
+Mc = troty(90*pi/180);
 ka = Ma * a; % Vector con respecto a O homogeneo.
 kb = Mb * b; % Vector con respecto a O homogeneo.
 kc = Mc * c; % Vector con respecto a O homogeneo.
