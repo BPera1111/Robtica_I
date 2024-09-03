@@ -5,6 +5,6 @@
 | Apellido | Nombre | Legajo |
 |----------|--------|--------|
 | PERALTA  | Bruno  | 13220  |
-| PEÑA     | Lautaro|        |
-| BABOLENE | Victor |        |
+| PEÑA     | Lautaro| 13099  |
+| BABOLENE | Victor | 13242  |
  
