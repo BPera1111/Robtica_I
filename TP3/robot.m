@@ -20,20 +20,22 @@ function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS>
     base = transl(-1,1,0) * trotz(-45);
     path = fullfile(pwd,'STL','KR16_arc_HW');
     % figure('name', 'Kuka 16');
-    R=create_robot(dh_kuka_16, 'Kuka 16', q_kuka_16, qlim_kuka_16, offet, base,path);
-    save('kuka_16.mat', 'R',"q_kuka_16","qlim_kuka_16","offet","base","path");
+    workspace = [-2 2 -2 2 -1 2.5];
+    R=create_robot(dh_kuka_16, 'Kuka 16', q_kuka_16, qlim_kuka_16, offet, base,path,workspace);
+    save('kuka_16.mat', 'R',"q_kuka_16","qlim_kuka_16","offet","base","path","workspace");
 
     
     
 end
 
-function R =create_robot(dh, name, q, qlim, offset,base,path)
+function R =create_robot(dh, name, q, qlim, offset,base,path,workspace)
     R = SerialLink(dh, 'name', name);
     R.base = base;
+    %Agregar tool
     % R.tool = transl(.2, .2, 0);
     R.offset = offset;
     R.qlim = qlim;
-    % R.plot(q, 'scale', 0.8, 'trail', {'r', 'LineWidth', 2});
+    %R.plot(q, 'scale', 0.8, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);
     % R.teach();
     % R.plot3d(q, 'path',path, 'nowrist', 'noarrow', 'view', [-30 30], 'delay', 0.01);
 end
