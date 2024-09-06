@@ -1,24 +1,24 @@
 function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS>
     
-    dh_kuka_16=[0.000 0.675 0.260   pi/2  0;
+    dh_kuka_16=[0.000 0.675 0.260  -pi/2  0;
                 0.000 0.000 0.680   0     0;
-                0.000 0.000 0.035   pi/2  0;
-                0.000 0.670 0.000  -pi/2  0;
-                0.000 0.000 0.000   pi/2  0;
-                0.000 0.158 0.000   0     0];
+                0.000 0.000 -0.035   -pi/2  0;
+                0.000 0.670 0.000  pi/2  0;
+                0.000 0.000 0.000   -pi/2  0;
+                0.000 0.115 0.000   0     0];
 
     q_kuka_16=[0,0,0,0,0,0];
 
     qlim_kuka_16=[-185, 185; 
-                  -155  ,35; 
-                  -130, 154; 
+                  -65  ,125; 
+                  -220, 64; 
                   -350, 350; 
                   -130, 130; 
                   -350, 350]*pi/180;
-    offet = [0,pi/2,0,0,0,0];
+    offet = [0,-pi/2,0,0,0,0];
 
     base = transl(-1,1,0) * trotz(-45);
-    path = fullfile(pwd,'STL','KR16_arc_HW');
+    path = fullfile(pwd,'STL','KR16_2');
     % figure('name', 'Kuka 16');
     workspace = [-2 2 -2 2 -1 2.5];
     R=create_robot(dh_kuka_16, 'Kuka 16', q_kuka_16, qlim_kuka_16, offet, base,path,workspace);
