@@ -1,4 +1,5 @@
 % Cargar el objeto R desde el archivo .mat y no ejecutar robot cada vez que se quiera probar el robot
+% Requiere que se ejecute primero una vez robot.m
 
 function herramienta; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS>
     load('kuka_16.mat', 'R','q_kuka_16','path','workspace');
