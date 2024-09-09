@@ -34,6 +34,7 @@ function R =create_robot(dh, name, q, qlim, offset,base,path,workspace)
     R.base = base;
     %Agregar tool
     % R.tool = transl(.2, .2, 0);
+    R.tool = trotz(pi/2);
     R.offset = offset;
     R.qlim = qlim;
     %R.plot(q, 'scale', 0.8, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);

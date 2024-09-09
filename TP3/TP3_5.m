@@ -16,7 +16,7 @@ function TP3_5; clc ; close all %#ok<*NOPRT>
               0.000 0.000 0.075   pi/2  0;
               0.000 0.320 0.000  -pi/2  0;
               0.000 0.000 0.000   pi/2  0;
-              0.000 0.080 0.000   0     0];
+              0.000 0.000 0.000   0     0];
     q_paint=[0,0,0,0,0,0];
     qlim_paint=[-170, 170; 
                 -100, 100; 
@@ -47,7 +47,7 @@ function TP3_5; clc ; close all %#ok<*NOPRT>
     figure('name', 'Paint');
 
     create_robot(dh_paint, 'Paint', q_paint, qlim_paint, [0,pi/2,0,0,0,0]);
-
+    
     figure('name', 'iiwa');
     create_robot(dh_iiwa, 'iiwa', q_iiwa, qlim_iiwa, [0,0,0,0,0,0,0]);
 
@@ -57,6 +57,6 @@ function create_robot(dh, name, q, qlim, offset)
     R = SerialLink(dh, 'name', name);
     R.offset = offset;
     R.qlim = qlim;
-    R.plot(q, 'scale', 0.5, 'trail', {'r', 'LineWidth', 2});
+    R.plot(q, 'scale', 0.1, 'trail', {'r', 'LineWidth', 2});
     R.teach();
 end
