@@ -2,7 +2,7 @@ function TP2_4 ; clc ; close all %#ok<*NOPRT>
 
     T0 = eye(4); % Sistema O
     aM = [2 ; 1 ; 0 ; 1]; % Punto a respecto de M
-    tita = -atan2(aM(2),aM(1)) * 180/pi; % Angúlo de rotacíon del sistema M respecto de O
+    tita = -atan2(aM(2),aM(1)) * 180/pi % Angúlo de rotacíon del sistema M respecto de O
     disp('La matriz de transformación homogénea del Sistema {M} respecto de {O} es:')
     T = transl([7,4,0])*trotz(tita) 
     a0 = T*aM; % Punto a respecto de O
