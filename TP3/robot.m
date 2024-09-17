@@ -1,4 +1,4 @@
-function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS>
+function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*INUSD>
     
     dh_kuka_16=[0.000 0.675 0.260  -pi/2  0;
                 0.000 0.000 0.680   0     0;
@@ -29,7 +29,7 @@ function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS>
     
 end
 
-function R =create_robot(dh, name, q, qlim, offset,base,path,workspace)
+function R =create_robot(dh, name, q, qlim, offset,base,path,workspace) 
     R = SerialLink(dh, 'name', name);
     R.base = base;
     %Agregar tool
