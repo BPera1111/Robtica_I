@@ -10,7 +10,7 @@ function esp_trabajo; clc; clear; close all;
         coord_xy(:,cont) = [T(1:2,4)];
         cont = cont + 1;
     end
-    x=[0 3];
+    x=[0 1];
     figure()
     plot(x, zeros(length(x)), 'b--');
     hold on
