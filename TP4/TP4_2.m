@@ -1,4 +1,3 @@
-% Trabajo Práctico N4 Ejercicio 2
 close all; clc; clear;
 DH = [
  0.000 0.195  0.300 0.000 0;
