@@ -6,13 +6,13 @@ clc, clear, close all
 fprintf('######################################################\n')
 fprintf('#                Ejemplos para el TP5                #\n')
 fprintf('######################################################\n\n')
-fprintf('Solución para el ejercicio 4.\n')
-fprintf('> Definición simbólica de matriz de parámetros DH\n')
-fprintf('> Creación de objeto SerialLink simbólico\n')
-fprintf('> Matrices de DH simbólicas\n')
-fprintf('> Cinemática Directa simbólica\n')
-fprintf('> Presentación de las 16 ecuaciones\n')
-fprintf('> Trabajo algebraico para despeje de incógnitas\n')
+fprintf('Soluciï¿½n para el ejercicio 4.\n')
+fprintf('> Definiciï¿½n simbï¿½lica de matriz de parï¿½metros DH\n')
+fprintf('> Creaciï¿½n de objeto SerialLink simbï¿½lico\n')
+fprintf('> Matrices de DH simbï¿½licas\n')
+fprintf('> Cinemï¿½tica Directa simbï¿½lica\n')
+fprintf('> Presentaciï¿½n de las 16 ecuaciones\n')
+fprintf('> Trabajo algebraico para despeje de incï¿½gnitas\n')
 %=========================================================================%
 syms q1 q2 q3 a1 a2 a3 real
 n = sym('n',[3,1],'real');
@@ -81,7 +81,7 @@ fprintf('\n----------------------------------------------------\n')
 fprintf('Presione Enter para continuar.\n')
 pause
 
-fprintf('Ecuación principal, elemento a elemento:\n')
+fprintf('Ecuaciï¿½n principal, elemento a elemento:\n')
 fprintf('TD = T1 * T2 * T3\n')
 [(1:16)',TD(:), T03(:)]
 
@@ -141,7 +141,7 @@ pause
 fprintf('\n> Despejando cos(q3): \n')
 q3_sol = isolate(ec_suma,cos(q3));
 q3_sol
-fprintf('\n> Nota: acos(x) tiene solución positiva y negativa\n')
+fprintf('\n> Nota: acos(x) tiene soluciï¿½n positiva y negativa\n')
 
 fprintf('\n----------------------------------------------------\n')
 fprintf('Presione Enter para continuar.\n')
@@ -168,7 +168,7 @@ pause
 fprintf('\n> Despejando cos(q2): \n')
 q2_sol = isolate(ec13,cos(q2));
 q2_sol
-fprintf('\n> Nota: acos(x) tiene solución positiva y negativa\n')
+fprintf('\n> Nota: acos(x) tiene soluciï¿½n positiva y negativa\n')
 
 fprintf('\n----------------------------------------------------\n')
 fprintf('Presione Enter para continuar.\n')
