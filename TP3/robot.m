@@ -1,4 +1,4 @@
-function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS>
+function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*INUSD>
     
     dh_kuka_16=[0.000 0.675 0.260  -pi/2  0;
                 0.000 0.000 0.680   0     0;
@@ -29,12 +29,12 @@ function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS>
     
 end
 
-function R =create_robot(dh, name, q, qlim, offset,base,path,workspace)
+function R =create_robot(dh, name, q, qlim, offset,base,path,workspace) 
     R = SerialLink(dh, 'name', name);
     R.base = base;
     %Agregar tool
     % R.tool = transl(.2, .2, 0);
-    R.tool = trotz(pi/2);
+    R.tool = transl(0,0,.2)*trotz(pi/2);
     R.offset = offset;
     R.qlim = qlim;
     %R.plot(q, 'scale', 0.8, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);
