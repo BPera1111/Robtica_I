@@ -1,10 +1,10 @@
 function[R1,R2] = robot()
-    % Suárez - Corazza - Masi.
+    % Suarez - Corazza - Masi.
 
     %--------------------------------
     % KR 120 R2100 nano F exclusive.
     %--------------------------------
-    dh = [0 0.570 0.300 -pi/2 0;   % Matriz de parámetros de DH.
+    dh = [0 0.570 0.300 -pi/2 0;   % Matriz de parï¿½metros de DH.
           0 0     0.900  0    0;
           0 0     0     -pi/2 0;
           0 0.900 0     -pi/2 0;
@@ -15,7 +15,7 @@ function[R1,R2] = robot()
 
     R2 = SerialLink(dh,'name','KR 120 R2100 nano F exclusive - 2'); % Robot 2.
 
-    % Vector de booleanos en donde se indique qué sistemas de referencia se desean visualizar.
+    % Vector de booleanos en donde se indique quï¿½ sistemas de referencia se desean visualizar.
 
     % Rangos de los movimientos.
     R1.qlim(1,1:2) = [-165,    165]*pi/180; 

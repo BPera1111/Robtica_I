@@ -1,4 +1,4 @@
-% Ejercicio 1 - TP5B - Cinemática Inversa - Corazza - Masi - Suárez.
+% Ejercicio 1 - TP5B - Cinematica Inversa - Corazza - Masi - Suarez.
 close all; clear all; clc;
 %
 d1=1;
@@ -15,19 +15,19 @@ R.qlim(3,1:2) = [-180,180]*pi/180;
 %
 %---Inciso 7---
 %
-q1 = [45,-45,90]*pi/180; % Configuración articular propuesta.
+q1 = [45,-45,90]*pi/180; % Configuraciï¿½n articular propuesta.
 T = Transf_Sistemas_Total(dh,q1);
 xc = T(1,4); 
 yc = T(2,4); 
 zc = T(3,4);
 %
-pc0 = [xc;yc;zc;1]; % Vector homogeno de posición de C con respecto a {0}.
+pc0 = [xc;yc;zc;1]; % Vector homogeno de posiciï¿½n de C con respecto a {0}.
 %
 flag=0; % Flag para saber si se grafica o no.
 %
 qsol=zeros(4,3); % Vector articular, hay cuatro soluciones posibles.
 %
-%---Cálculo de tita1---
+%---Cï¿½lculo de tita1---
 %
 qsol(1,1) = atan2(yc,xc);
 qsol(2,1) = qsol(1,1);
@@ -40,7 +40,7 @@ if qsol(1,1) <= 0
     qsol(4,1) = qsol(3,1);
 end
 %
-%---Cálculo de tita2---
+%---Cï¿½lculo de tita2---
 %
 pc1 = zeros(4,2);
 for i=1:1:2
@@ -54,7 +54,7 @@ for i=1:1:2
 end
 pc1 = [pc1(:,1) pc1(:,1) pc1(:,2) pc1(:,2)];
 %
-%---Cálculo de tita3---
+%---Cï¿½lculo de tita3---
 %
 for i=1:1:4
     T12 = Transf_Sistemas(dh(2,:),qsol(i,2));
@@ -64,7 +64,7 @@ end
 %
 %---Ploteo---
 %
-qs = qsol(1,:); % Configuración de solución.
+qs = qsol(1,:); % Configuraciï¿½n de soluciï¿½n.
 for i=1:1:3
     if (qs(i)>pi || qs(i)<-pi)
         flag = 1;
@@ -77,7 +77,7 @@ if flag==0
     plot3(xc,yc,zc,'*k','Color','b') % Ploteo del punto.
     grid on
 else 
-    disp('Solución fuera de rango articular.')
+    disp('Soluciï¿½n fuera de rango articular.')
     disp(qs*180/pi);
 end
 disp('Todas las soluciones:')

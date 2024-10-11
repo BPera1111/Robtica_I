@@ -1,4 +1,4 @@
-% Ejercicio 2 - TP5B - Cinemática Inversa - Corazza - Masi - Suárez.
+% Ejercicio 2 - TP5B - Cinematica Inversa - Corazza - Masi - Suarez.
 close all; clear all; clc;
 %
 d1=1;
@@ -21,13 +21,13 @@ R.qlim(4,1:2) = [-360,360]*pi/180;
 R.qlim(5,1:2) = [-360,360]*pi/180;  
 R.qlim(6,1:2) = [-360,360]*pi/180; 
 %
-%---Cálculo del centro de la muñeca---
+%---Cï¿½lculo del centro de la muï¿½eca---
 %
 p = T(1:3,4) - dh(6,2) * T(1:3,3);
 %
 qsol=zeros(8,6); % Vector articular, hay cuatro soluciones posibles.
 %
-%---Cálculo de tita1---
+%---Cï¿½lculo de tita1---
 %
 qsol(1,1) = atan2(p(2),p(1));
 qsol(2,1) = qsol(1,1);
@@ -40,7 +40,7 @@ if qsol(1,1) <= 0
     qsol(4,1) = qsol(3,1);
 end
 %
-%---Cálculo de tita2---
+%---Cï¿½lculo de tita2---
 %
 for i=1:1:2
     T1 = R.links(1).A(qsol(2*i,1)).double;
@@ -54,7 +54,7 @@ for i=1:1:2
     qsol(2*i,2) = beta_2 + alfa_2;
 end
 %
-%---Cálculo de tita3---
+%---Cï¿½lculo de tita3---
 %
 for i=1:1:4
     T1 = R.links(1).A(qsol(i,1)).double;
@@ -64,11 +64,11 @@ for i=1:1:4
     qsol(i,3) = atan2(pc2(2),pc2(1))- pi/2;
 end
 %
-%---Problema de la orientación---
+%---Problema de la orientaciï¿½n---
 %
 qsol(5:8,1:3) = qsol(1:4,1:3);
 %
-%---Cálculo de tita4---
+%---Cï¿½lculo de tita4---
 %
 for i=1:1:4
     T1 = R.links(1).A(qsol(i,1)).double;
@@ -83,7 +83,7 @@ for i=1:1:4
     end
 end
 %
-%---Cálculo de tita5---
+%---Cï¿½lculo de tita5---
 %
 for i=1:1:8
     T1 = R.links(1).A(qsol(i,1)).double;
@@ -100,6 +100,6 @@ end
 figure(1)
 R.plot(qsol(8,:),'workspace',[-4 4 -4 4 -4 4],'scale',0.5,'jointdiam',0.5) % Ploteo del modelo.
 hold on
-plot3(p(1),p(2),p(3),'*k','Color','r') % Punto de la muñeca.
+plot3(p(1),p(2),p(3),'*k','Color','r') % Punto de la muï¿½eca.
 plot3(T(1,4),T(2,4),T(3,4),'*k','Color','b') % Ploteo del punto.
 grid on
