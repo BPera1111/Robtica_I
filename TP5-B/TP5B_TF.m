@@ -1,8 +1,16 @@
-function TP5B_TF(q_mejor); close all; %#ok<*NOPRT,*CLEAR0ARGS,*NOPTS,*NASGU,*MINV,*ASGLU>
+function TP5B_TF(q0, q_mejor); 
+    close all; %#ok<*NOPRT,*CLEAR0ARGS,*NOPTS,*NASGU,*MINV,*ASGLU>
+    
+    if nargin == 1
+        q_mejor = false;
+    elseif nargin ~= 2
+    error('Argumentos incorrectos')
+    end
+
     load('kuka_16.mat', 'R','q_kuka_16','path','workspace','dh_kuka_16');
 
-    q_kuka_16 = [ 35, -70, -35, 35, -35, 35] * pi/180;
-
+    %q_kuka_16 = [ 35, -70, -35, 35, -35, 35] * pi/180;
+    q_kuka_16 = q0;
     offsets_OLD = R.offset;
     R.offset = zeros(6,1);
 
@@ -52,7 +60,7 @@ function TP5B_TF(q_mejor); close all; %#ok<*NOPRT,*CLEAR0ARGS,*NOPTS,*NASGU,*MIN
     %disp(size(R.offset))
     qq = qq - R.offset' * ones(1,8);
 
-    if q_mejor == 'true'
+    if q_mejor == true
         Qaux = qq  - q_kuka_16' * ones(1,8)
         normas = zeros(1,8);
     end
