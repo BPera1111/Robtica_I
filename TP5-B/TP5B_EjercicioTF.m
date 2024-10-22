@@ -8,6 +8,12 @@ function TP5B_TF(q0, q_mejor);
     end
 
     load('kuka_16.mat', 'R','q_kuka_16','path','workspace','dh_kuka_16');
+    %si se le pasa un argumento se consifera q_mejor = true
+    if nargin == 0 % si no se pasa el argumento q_mejor, se asume false
+        q_mejor = false;
+    elseif nargin ~= 1 % si se pasan más de 1 argumento, se lanza un error
+        error('Argumentos incorrectos')
+    end
 
     %q_kuka_16 = [ 35, -70, -35, 35, -35, 35] * pi/180;
     q_kuka_16 = q0;
@@ -55,16 +61,24 @@ function TP5B_TF(q0, q_mejor);
     end
     % Offset ------------------------------------------------------------------
     R.offset = offsets_OLD;
-    disp(R.offset)
-    %disp(size(qq))
-    %disp(size(R.offset))
     qq = qq - R.offset' * ones(1,8);
 
+<<<<<<< HEAD:TP5-B/TP5B_TF.m
     if q_mejor == true
         Qaux = qq  - q_kuka_16' * ones(1,8)
+=======
+    if q_mejor
+        Qaux = qq  - q_kuka_16' * ones(1,8);
+>>>>>>> e990b91159c311eb736d4e203b0e24e75d6eb207:TP5-B/TP5B_EjercicioTF.m
         normas = zeros(1,8);
-    end
-    
+        for i=1:8
+            normas(i) = norm(Qaux(:,i));
+        end
+        [~,pos] = min(normas);
+        Q = qq(:, pos)
+    else
+        Q = qq
+    end    
 end
 
 
