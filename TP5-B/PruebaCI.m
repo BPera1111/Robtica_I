@@ -8,15 +8,14 @@ R = RobotCI();
 
 % q = [40, -60, -30, 30, -40, 40] * pi/180; % Se propone este vector articular a modo de ejemplo.
 q = semillas(R); % Se propone este vector articular a modo de ejemplo.
-q= [0,0,0,0,90,0]*pi/180;
 T = R.fkine(q); % Matriz T dato.
-T= [1 0 0 0; 0 1 0 1.25; 0 0 1 1.5; 0 0 0 1];
+
 q0 = [0,0,0,0,0,0]*pi/180;
 
 disp('Comparación de resultados:')
 disp('q semilla:');
 disp(q*180/pi);
-% Cinemática inversa 
+% Cinemática inversa
 [qsol, qq] = TP5B_EjercicioTF(T, R, q0, 1);
 %qsol = TP5B_EjercicioTF(T, R, q0, 0);
 
