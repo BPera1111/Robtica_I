@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 simulacion_traj
 
 dt = 0.1;
@@ -61,3 +62,68 @@ for c = 1:col
     a1(1,c) = sqrt(a1_x(1,c)^2 + a1_y(1,c)^2 + a1_z(1,c)^2);
 end
 
+=======
+simulacion_traj
+
+dt = 0.1;
+
+%Interpolación cartesiana - ROBOT 1
+Ttraj_1 = ctraj(T0,T1,10);
+Ttraj_1 = concatenar_matriz(Ttraj_1, ctraj(T1, T2, 50));
+Ttraj_1 = concatenar_matriz(Ttraj_1, ctraj(T2, T3, 10));
+Ttraj_1 = concatenar_matriz(Ttraj_1, ctraj(T3, T4, 10));
+Ttraj_1 = concatenar_matriz(Ttraj_1, ctraj(T4, T3, 10));
+Ttraj_1 = concatenar_matriz(Ttraj_1, ctraj(T3, T2, 10));
+Ttraj_1 = concatenar_matriz(Ttraj_1, ctraj(T2, T0, 20));
+
+x1_cart = zeros(1,size(Ttraj_1,3));
+y1_cart = zeros(1,size(Ttraj_1,3));
+z1_cart = zeros(1,size(Ttraj_1,3));
+q1_cart = zeros(size(Ttraj_1,3),6);
+%Posición del efector y posicion articular
+for i=1:size(Ttraj_1,3)
+    x1_cart(i) = Ttraj_1(1,4,i);
+    y1_cart(i) = Ttraj_1(2,4,i);
+    z1_cart(i) = Ttraj_1(3,4,i);
+    q1_cart(i,:) = CinInv(Ttraj_1(:,:,i), R1, q_ref, 1);
+end
+
+%Cálculo de la velocidad articular
+qd1_cart = zeros(size(q1_cart));
+qdd1_cart = zeros(size(q1_cart));
+for i=1:size(qd1_cart,1)-1
+    
+end
+
+%Cálculo de la velocidad del efector mediante derivación numérica
+[row, col] = size(x1_cart);
+v1_x = zeros(size(x1_cart));
+v1_y = zeros(size(x1_cart));
+v1_z = zeros(size(x1_cart));
+v1 = zeros(size(x1_cart));
+for c = 1:col-1
+    v1_x(1,c) = (x1_cart(1,c+1) - x1_cart(1,c))/dt; 
+    v1_y(1,c) = (y1_cart(1,c+1) - y1_cart(1,c))/dt;
+    v1_z(1,c) = (z1_cart(1,c+1) - z1_cart(1,c))/dt; 
+end
+%Cálculo del módulo de la velocidad
+for c = 1:col
+    v1(1,c) = sqrt(v1_x(1,c)^2 + v1_y(1,c)^2 + v1_z(1,c)^2);
+end
+
+%Cálculo de la aceleración del efector mediante derivación numérica
+a1_x = zeros(size(x1_cart));
+a1_y = zeros(size(x1_cart));
+a1_z = zeros(size(x1_cart));
+a1 = zeros(size(x1_cart));
+for c = 1:col-1
+    a1_x(1,c) = (v1_x(1,c+1) - v1_x(1,c))/dt; 
+    a1_y(1,c) = (v1_y(1,c+1) - v1_y(1,c))/dt;
+    a1_z(1,c) = (v1_z(1,c+1) - v1_z(1,c))/dt; 
+end
+%Cálculo del módulo de la velocidad
+for c = 1:col
+    a1(1,c) = sqrt(a1_x(1,c)^2 + a1_y(1,c)^2 + a1_z(1,c)^2);
+end
+
+>>>>>>> 5d5cfbc (por favor funciona)

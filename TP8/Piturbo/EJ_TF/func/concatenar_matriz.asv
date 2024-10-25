@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function [T_traj] = concatenar_matriz(T_traj1,T_traj2)
     T_traj = zeros(4,4,size(T_traj1,3)+size(T_traj2,3));
     for i=1:size(T_traj2,3)
@@ -7,3 +8,14 @@ outputArg1 = inputArg1;
 outputArg2 = inputArg2;
 end
 
+=======
+function [T_traj] = concatenar_matriz(T_traj1,T_traj2)
+    T_traj = zeros(4,4,size(T_traj1,3)+size(T_traj2,3));
+    for i=1:size(T_traj2,3)
+        T_traj1(:,:,end+1)=T_traj2(:,:,i);
+    end
+outputArg1 = inputArg1;
+outputArg2 = inputArg2;
+end
+
+>>>>>>> 5d5cfbc (por favor funciona)
