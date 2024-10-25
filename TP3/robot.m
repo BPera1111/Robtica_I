@@ -17,7 +17,7 @@ function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*INUSD>
                   -350, 350]*pi/180;
     offet = [0,-pi/2,0,0,0,0];
 
-    base = transl(-1,1,0) * trotz(-45);
+    base = trotz(-45);
     %base = eye(4);
     path = fullfile(pwd,'STL','KR16_2');
     % figure('name', 'Kuka 16');
