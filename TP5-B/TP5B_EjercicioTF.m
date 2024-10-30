@@ -1,33 +1,20 @@
-function TP5B_TF(q0, q_mejor); 
-    close all; %#ok<*NOPRT,*CLEAR0ARGS,*NOPTS,*NASGU,*MINV,*ASGLU>
-    
-    if nargin == 1
-        q_mejor = false;
-    elseif nargin ~= 2
-    error('Argumentos incorrectos')
-    end
-
-    load('kuka_16.mat', 'R','q_kuka_16','path','workspace','dh_kuka_16');
-    %si se le pasa un argumento se consifera q_mejor = true
-    if nargin == 0 % si no se pasa el argumento q_mejor, se asume false
-        q_mejor = false;
-    elseif nargin ~= 1 % si se pasan más de 1 argumento, se lanza un error
+function Q = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
+    if nargin == 3
+        mejor = false;
+    elseif nargin ~= 4
         error('Argumentos incorrectos')
     end
 
-    %q_kuka_16 = [ 35, -70, -35, 35, -35, 35] * pi/180;
-    q_kuka_16 = q0;
+    % Desacople de base y tool ------------------------------------------------
+    T = invHomog(R.base.double) * T.double * invHomog(R.tool.double);
+
+    %Eliminación de offsets --------------------------------------------------
     offsets_OLD = R.offset;
     R.offset = zeros(6,1);
 
-    [T,all]=R.fkine(q_kuka_16);
+    %Punto (x,y,z) de la muñeca ----------------------------------------------
+    p = T(1:3,4) - R.links(6).d * T(1:3,3);
 
-
-    T = invHomog(R.base.double) * T.double * invHomog(R.tool.double);
-    
-
-    p = T(1:3,4) - dh_kuka_16(6,2) * T(1:3,3);
-    
     % Cálculo de q1 -----------------------------------------------------------
     %   > 2 posibles soluciones
     q1 = calcular_q1(p); % > q1(1) y q1(2)
@@ -36,7 +23,7 @@ function TP5B_TF(q0, q_mejor);
     %   > 2 posibles soluciones para cada q1
     q21 = calcular_q2(R, q1(1), p); % > q21(1) y q21(2)
     q22 = calcular_q2(R, q1(2), p); % > q22(1) y q22(2)
-    
+
     % Cálculo de q3 -----------------------------------------------------------
     %   > 1 valor posible por cada par (q1,q2)
     q311 = calcular_q3(R, q1(1), q21(1), p);
@@ -49,8 +36,6 @@ function TP5B_TF(q0, q_mejor);
     qq(2,:) = [q21(1) q21(1) q21(2) q21(2) q22(1) q22(1) q22(2) q22(2)];
     qq(3,:) = [q311   q311   q312   q312   q321   q321   q322   q322];
 
-    % Puto el que lee ---------------------------------------------------------
-
     % Cálculo de q4, q5 y q6 --------------------------------------------------
     for i=1:2:7
         q1 = qq(1, i);
@@ -62,23 +47,22 @@ function TP5B_TF(q0, q_mejor);
     % Offset ------------------------------------------------------------------
     R.offset = offsets_OLD;
     qq = qq - R.offset' * ones(1,8);
-
-<<<<<<< HEAD:TP5-B/TP5B_TF.m
-    if q_mejor == true
-        Qaux = qq  - q_kuka_16' * ones(1,8)
-=======
-    if q_mejor
+    % Selección de solución ---------------------------------------------------
+    if mejor == true
         Qaux = qq  - q_kuka_16' * ones(1,8);
->>>>>>> e990b91159c311eb736d4e203b0e24e75d6eb207:TP5-B/TP5B_EjercicioTF.m
+        disp('Soluciones de Cinemática Inversa:')
+        disp(Qaux)
         normas = zeros(1,8);
         for i=1:8
             normas(i) = norm(Qaux(:,i));
         end
         [~,pos] = min(normas);
-        Q = qq(:, pos)
+        Q = qq(:, pos);
+        disp('Mejor solución:')
+        disp(Q)
     else
         Q = qq
-    end    
+    end
 end
 
 
@@ -88,7 +72,8 @@ function q1 = calcular_q1(p)
 q1(1) = atan2(p(2), p(1)); % -pi >= atan2 <= pi
 
 if q1(1) > 0, q1(2) = q1(1) - pi; 
-else, q1(2) = q1(1) + pi; end
+else, q1(2) = q1(1) + pi;
+end
 end
 
 %=========================================================================%
@@ -100,9 +85,20 @@ p = invHomog(T1) * [p; 1]; % p respecto de {1}
 B = atan2(p(2), p(1));
 r = sqrt(p(1)^2 + p(2)^2);
 L2 = R.links(2).a; % a2
-L3 = R.links(4).d; % d4
+
+%L3 como la hipoteusa del triángulo entre a3 y d4
+a3 = R.links(3).a;
+d4 = R.links(4).d;
+L3 = sqrt(a3^2 + d4^2);
+
+%Calculamos el ángulo usando L2 y L3
 G = acos((L2^2 + r^2 - L3^2) / (2 * r * L2));
 
+%Verificamos si G es complejo
+if imag(G) > 0
+    warning('Solucion compleja en calcular_q2; revise para,etros.')
+end
+%Angulo desfasado pi
 q2(1) = B - real(G);
 q2(2) = B + real(G);
 end

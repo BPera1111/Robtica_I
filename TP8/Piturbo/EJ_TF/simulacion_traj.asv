@@ -1,0 +1,210 @@
+[R1, R2, R3] = robot();
+q_ref = [0 0 0 0 0 0];
+
+%Trayectoria del robot 1
+%------------------------
+P0 = [1.9; 0; 0.5];
+T0 = rpy2r(180, 30, 180, 'deg');
+T0 = [T0 P0
+      0 0 0 1];
+
+P1 = [1.9; 0; 0.259];
+T1 = rpy2r(180, 30, 180, 'deg');
+T1 = [T1 P1
+      0 0 0 1];
+  
+P2 = [0; 2; 0.40];
+T2 = [1 0 0
+      0 0 1
+      0 -1 0];
+T2 = [T2 P2
+      0 0 0 1];
+
+P3 = [0; 2.4; 0.40];
+T3 = [1 0 0
+      0 0 1
+      0 -1 0];
+T3 = [T3 P3
+      0 0 0 1];
+
+P4 = [0; 2.4; 0.20];
+T4 = [1 0 0
+      0 0 1
+      0 -1 0];
+T4 = [T4 P4
+      0 0 0 1]; 
+ 
+q0 = CinInv(T0, R1, q_ref, 1);
+q1 = CinInv(T1, R1, q_ref, 1);
+q2 = CinInv(T2, R1, q_ref, 1);
+q3 = CinInv(T3, R1, q_ref, 1);
+q4 = CinInv(T4, R1, q_ref, 1);
+
+q_traj1 = jtraj(q0, q1, 10);
+q_traj1 = [q_traj1; jtraj(q1, q2, 30)];
+q_traj1 = [q_traj1; jtraj(q2, q3, 10)];
+q_traj1 = [q_traj1; jtraj(q3, q4, 10)];
+q_traj1 = [q_traj1; jtraj(q4, q3, 10)];
+q_traj1 = [q_traj1; jtraj(q3, q2, 10)];
+q_traj1 = [q_traj1; jtraj(q2, q0, 10)];
+
+%Trayectoria del robot 2
+%------------------------
+P2_0 = [0; 2.8; 0.40];
+T2_0 = [0 -1 0
+       0 0 -1
+       1 0 0];
+T2_0 = [T2_0 P2_0
+      0 0 0 1];
+
+P2_1 = [0; 2.4; 0.40];
+T2_1 = [0 -1 0
+       0 0 -1
+       1 0 0];
+T2_1 = [T2_1 P2_1
+      0 0 0 1];
+
+P2_2 = [0; 2.4; 0.20];
+T2_2 = [0 -1 0
+       0 0 -1
+       1 0 0];
+T2_2 = [T2_2 P2_2
+      0 0 0 1];
+
+P2_3 = [-1;4;0.4];
+T2_3 = [0 0 -1
+        0 1 0
+        1 0 0];
+T2_3 = [T2_3 P2_3
+       0 0 0 1]; %Punto intermedio de posicionamiento para que no se descontrole la posición del robot
+
+P2_4 = [-0.5;6;0.7];
+T2_4 = [0 1 0
+        0 0 1
+        1 0 0];
+T2_4 = [T2_4 P2_4
+       0 0 0 1];
+
+P2_5 = [-0.5; 6.3; 0.7];
+T2_5 = [0 1 0
+        0 0 1
+        1 0 0];
+T2_5 = [T2_5 P2_5
+       0 0 0 1];
+
+P2_6 = [-0.5; 6.3; 0.5];
+T2_6 = [0 1 0
+        0 0 1
+        1 0 0];
+T2_6 = [T2_6 P2_6
+       0 0 0 1];
+   
+q2_0 = CinInv(T2_0, R2, q_ref, 1);
+q2_1 = CinInv(T2_1, R2, q_ref, 1);
+q2_2 = CinInv(T2_2, R2, q_ref, 1);
+q2_3 = CinInv(T2_3, R2, q_ref, 1);
+q2_4 = CinInv(T2_4, R2, q2_3, 1);
+q2_5 = CinInv(T2_5, R2, q2_4, 1);
+q2_6 = CinInv(T2_6, R2, q2_5, 1);
+
+q_traj2 = jtraj(q2_0, q2_1, 10);
+q_traj2 = [q_traj2; jtraj(q2_1, q2_2, 10)];
+q_traj2 = [q_traj2; jtraj(q2_2, q2_1, 10)];
+q_traj2 = [q_traj2; jtraj(q2_1, q2_0, 10)];
+q_traj2 = [q_traj2; mstraj([q2_0; q2_3; q2_4],[2, 1.5, 1.5, 1.5, 1.5, 1.5],[],q2_0, 0.05, 0.15)];
+q_traj2 = [q_traj2; jtraj(q2_4, q2_5, 10)];
+q_traj2 = [q_traj2; jtraj(q2_5, q2_6, 10)];
+q_traj2 = [q_traj2; jtraj(q2_6, q2_5, 10)];
+q_traj2 = [q_traj2; jtraj(q2_5, q2_4, 10)];
+q_traj2 = [q_traj2; jtraj(q2_4, q2_0, 10)];
+
+%Trayectoria del robot 3
+%------------------------
+P3_0 = [-0.5; 7; 0.7];
+T3_0 = [0 -1 0
+        0 0 -1
+        1 0 0];
+T3_0 = [T3_0 P3_0
+        0 0 0 1];
+   
+P3_1 = [-0.5; 6; 0.7];
+T3_1 = [0 -1 0
+        0 0 -1
+        1 0 0];
+T3_1 = [T3_1 P3_1
+        0 0 0 1];
+ 
+P3_2 = [-0.5; 6; 0.5];
+T3_2 = [0 -1 0
+        0 0 -1
+        1 0 0];
+T3_2 = [T3_2 P3_2
+        0 0 0 1];
+
+P3_3 = [-1.5; 8; 0.7];
+T3_3 = [0 0 -1
+        0 1 0
+        1 0 0];
+T3_3 = [T3_3 P3_3
+        0 0 0 1];
+  
+P3_4 = [-1.5; 8; 0.5];
+T3_4 = [0 0 -1
+        0 1 0
+        1 0 0];
+T3_4 = [T3_4 P3_4
+        0 0 0 1];
+
+q3_0 = CinInv(T3_0,R3, q_ref, 1);
+q3_1 = CinInv(T3_1,R3, q3_0, 1);
+q3_2 = CinInv(T3_2, R3, q3_1, 1);
+q3_3 = CinInv(T3_3, R3, q3_2, 1);
+q3_4 = CinInv(T3_4, R3, q3_3, 1);
+
+q_traj3 = jtraj(q3_0, q3_1, 10);
+q_traj3 = [q_traj3; jtraj(q3_1, q3_2, 10)];
+q_traj3 = [q_traj3; jtraj(q3_2, q3_1, 10)];
+q_traj3 = [q_traj3; jtraj(q3_1, q3_0, 10)];
+q_traj3 = [q_traj3; jtraj(q3_0, q3_3, 10)];
+q_traj3 = [q_traj3; jtraj(q3_3, q3_4, 10)];
+q_traj3 = [q_traj3; jtraj(q3_4, q3_3, 10)];
+q_traj3 = [q_traj3; jtraj(q3_3, q3_0, 10)];
+
+W = [-3 5 -3 10 -3 5];
+figure()
+R1.plot(q0,'workspace',W,'scale',0.5,'jointdiam',0.5,'notiles', 'movie', 'anim.gif')
+hold on
+R2.plot(q2_0,'workspace',W, 'scale',0.5,'jointdiam',0.5,'notiles')
+hold on
+R3.plot(q3_0,'workspace',W, 'scale',0.5,'jointdiam',0.5,'notiles')
+hold on
+trplot(eye(4)) % Sistema de referencia.
+
+index_1 = 1;
+index_2 = 1;
+index_3 = 1;
+while(1)
+    if index_1 <= size(q_traj1,
+    R1.plot(q_traj1(index_1,:))
+    R2.plot(q_traj2(index_2,:))
+    R3.plot(q_traj3(index_3,:))
+    index_1 = index_1 + 1;
+    index_2 = index_2 + 1;
+    index_3 = index_3 + 1;
+    if(index_1 > size(q_traj1,1))
+        index_1 = 1;
+    end
+    if(index_2 > size(q_traj2,1))
+        index_2 = 1;
+    end
+    if(index_3 > size(q_traj3,1))
+        index_3 = 1;
+    end
+end
+% R1.plot(q_traj1,'workspace',W,'scale',0.5,'jointdiam',0.5,'notiles', 'movie', 'anim.gif') % Ploteo del modelo.
+% hold on
+% R2.plot(q_traj2,'workspace',W, 'scale',0.5,'jointdiam',0.5,'notiles', 'movie', 'anim.gif')
+% hold on
+% R3.plot(q_traj3,'workspace',W, 'scale',0.5,'jointdiam',0.5,'notiles', 'movie', 'anim.gif')
+% hold on
+% trplot(eye(4)) % Sistema de referencia.
