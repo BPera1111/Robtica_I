@@ -51,7 +51,7 @@ function Q = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
     if mejor == true
         Qaux = qq  - q_kuka_16' * ones(1,8);
         disp('Soluciones de Cinemática Inversa:')
-        disp(Qaux)
+        disp(Qaux*180/pi)
         normas = zeros(1,8);
         for i=1:8
             normas(i) = norm(Qaux(:,i));
@@ -59,7 +59,7 @@ function Q = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
         [~,pos] = min(normas);
         Q = qq(:, pos);
         disp('Mejor solución:')
-        disp(Q)
+        disp(Q*180/pi)
     else
         Q = qq
     end
@@ -110,7 +110,12 @@ T1 = R.links(1).A(q1).double;
 T2 = T1 * R.links(2).A(q2).double;
 p = invHomog(T2) * [p; 1]; % p respecto de {2}
 
-q3 = atan2(p(2), p(1)) - pi/2;
+H = atan2(p(2), p(1));
+d4 = R.links(4).d;
+a3 = R.links(3).a;
+I = atan2(d4, a3);
+
+q3 = H - I;
 end
 
 %=========================================================================%
