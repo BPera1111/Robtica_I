@@ -6,11 +6,11 @@ function TP6_TF; clc; clear ; close all; %#ok<*NOPRT,*CLEAR0ARGS,*NOPTS,*NASGU,*
 
     disp("Confirmando singularidades");
     
-    disp("Singularidades por Muñeca")
-    Muneca(R, 4,path);
+    % disp("Singularidades por Muñeca")
+    % Muneca(R, 4,path);
     close all;
     disp("Singularidades por Codo")
-    codo(R, 10000,path);
+    codo(R, 1000,path);
     close all;
 
 

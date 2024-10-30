@@ -2,7 +2,7 @@ function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*INUSD>
     
     dh_kuka_16=[0.000 0.675 0.260  -pi/2  0;
                 0.000 0.000 0.680   0     0;
-                0.000 0.000 -0.035   -pi/2  0;
+                0.000 0.000 0.035   -pi/2  0;
                 0.000 0.670 0.000  pi/2  0;
                 0.000 0.000 0.000   -pi/2  0;
                 0.000 0.115 0.000   0     0];
@@ -37,7 +37,7 @@ function R =create_robot(dh, name, q, qlim, offset,base,path,workspace)
     R.tool = transl(0,0,.2)*trotz(pi/2);
     R.offset = offset;
     R.qlim = qlim;
-    %R.plot(q, 'scale', 0.8, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);
+    % R.plot(q, 'scale', 0.1, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);
     % R.teach();
     % R.plot3d(q, 'path',path, 'nowrist', 'noarrow', 'view', [-30 30], 'delay', 0.01);
 end

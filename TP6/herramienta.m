@@ -11,6 +11,7 @@ function herramienta; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*NASGU>
     R.base = trotz(-45);
     
 
+    
     % figure('name', 'Kuka 16 con teach');
     
     % R.plot(vector_q, 'scale', 0.4, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);
