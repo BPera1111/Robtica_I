@@ -16,13 +16,13 @@ disp('Comparación de resultados:')
 disp('q semilla:');
 disp(q*180/pi);
 % Cinemática inversa
-qsol = TP5B_EjercicioTF(T, R, q0, 1);
+[qsol, qq] = TP5B_EjercicioTF(T, R, q0, 1);
 %qsol = TP5B_EjercicioTF(T, R, q0, 0);
 
 % Intentar de nuevo la cinemática inversa con un mayor número de iteraciones y tolerancia ajustada
 % qinv = R.ikine(T, 'q0', q, 'tol', 1e-6, 'ilimit', 500);
 qinv = R.ikcon(T);
-disp('Solucion calculada con el metodo ikine:')
+disp('Solucion calculada con el metodo ikcon:')
 disp(qinv'*180/pi);
 
 % Corroboración
@@ -36,6 +36,7 @@ disp('Matriz T calculada con fkine para la mejor solución de mi metodo de CInv:
 disp(Tp)
 %disp('Matriz T calculada con fkine para la primer solución de mi metodo de CInv:')
 %disp(Tpb)
+% verificar(q,qq,R);
 mat_dif = double(T) - double(Tp);
 disp('Diferencia entre las matrices T y Tp:')
 disp(mat_dif)
@@ -55,7 +56,7 @@ function q_ran = semillas(R)
     qlim_5 = R.qlim(5, 1:2);
     qlim_6 = R.qlim(6, 1:2);
     
-    q1 = qlim_1(1) + (qlim_1(2)-qlim_1(1))*rand;
+    q1 = qlim_1(1)+(qlim_1(2)-qlim_1(1))*rand;
     q2 = qlim_2(1)+(qlim_2(2)-qlim_2(1))*rand;
     q3 = qlim_3(1)+(qlim_3(2)-qlim_3(1))*rand;
     % q3 = -pi/2;
@@ -93,3 +94,16 @@ function graficar(R, q)
         uiwait(gcf);
     end
 end
+
+% function verificar(q,qq,R)
+%     tin=[];
+
+%     for i=1:8
+%         tin = [tin R.fkine(qq(:,i)').double];
+%     end
+
+%     for i=1:8
+%         disp('diferencias matrices Tinv vs T Semilla')
+%         dif = double(tin()) - double(R.fkine(q))
+%     end
+% end

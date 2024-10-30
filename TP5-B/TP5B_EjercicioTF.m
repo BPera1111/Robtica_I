@@ -1,4 +1,4 @@
-function Q = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
+function [Q,qq] = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
     if nargin == 3
         mejor = false;
     elseif nargin ~= 4
