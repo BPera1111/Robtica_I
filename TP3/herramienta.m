@@ -5,7 +5,7 @@ function herramienta; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*NASGU>
     load('kuka_16.mat', 'R','q_kuka_16','path','workspace');
 
     vector_q=[0,0,0,0,0,0]; %posicion de las articulaciones
-    vector_s=[1,1,1,0,0,0,0];%1 si se quiere mostrar el sistema de la articulacion, 0 si no
+    vector_s=[0,0,0,0,0,0,0];%1 si se quiere mostrar el sistema de la articulacion, 0 si no
     figure('name', 'Kuka 16 con stl');
     R.plot3d(q_kuka_16, 'path',path,'notiles', 'nowrist','view',[30,30], 'scale', 0.1);
     R.base = trotz(-45);

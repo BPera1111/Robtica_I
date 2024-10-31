@@ -9,8 +9,8 @@ R = RobotCI();
 % q = [40, -60, -30, 30, -40, 40] * pi/180; % Se propone este vector articular a modo de ejemplo.
 q = semillas(R); % Se propone este vector articular a modo de ejemplo.
 q= [0,0,0,0,90,0]*pi/180;
-T = R.fkine(q); % Matriz T dato.
-T= [1 0 0 0; 0 1 0 1.25; 0 0 1 1.5; 0 0 0 1];
+T = R.fkine(q) % Matriz T dato.
+T= transl(1.25,0,1.5)
 q0 = [0,0,0,0,0,0]*pi/180;
 
 disp('Comparación de resultados:')
@@ -82,10 +82,10 @@ function graficar(R, q)
         else
             title('Solución ikcon');
         end
-        path = fullfile(pwd,'STL','KR16_2');
+        path = fullfile(pwd,'..','STL','KR16_2');
         % Visualizar la configuración actual
         % R.plot(q(:, i)', 'notiles', 'nowrist', 'view', [30, 30], 'scale', 0.1);
-        R.plot3d(q(:, i)', 'path', path, 'notiles', 'nowrist', 'view', [30, 30], 'scale', 0.1);
+        R.plot3d(q(:, i)', 'path', path, 'notiles', 'nowrist', 'view', [0, 0], 'scale', 0.1);
         % Crear botón para avanzar a la siguiente configuración
         uicontrol('Style', 'pushbutton', 'String', 'Siguiente', ...
                   'Position', [20 20 80 40], ...

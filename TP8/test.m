@@ -11,9 +11,9 @@ function herramienta; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*NASGU>
     R.base = trotz(0);
     % Parámetros de la circunferencia
     radio = 0.1; % Radio de la circunferencia
-    centro_y = 1.1; % Centro de la circunferencia en el eje Y
-    centro_z = 1; % Centro de la circunferencia en el eje Z
-    num_puntos = 5; % Número de puntos en la circunferencia
+    centro_y = 0.75; % Centro de la circunferencia en el eje Y
+    centro_z = 1.25; % Centro de la circunferencia en el eje Z
+    num_puntos = 10; % Número de puntos en la circunferencia
 
     % Generar puntos de la circunferencia en el plano YZ
     theta = linspace(0, 2*pi, num_puntos); % Ángulos de la circunferencia
