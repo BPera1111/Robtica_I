@@ -1,29 +1,29 @@
-function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*INUSD>
+function robot2; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*INUSD>
     
-    dh_kuka_16=[0.000 0.675 0.260  -pi/2  0;
+    dh_kuka_16_2=[0.000 0.675 0.260  -pi/2  0;
                 0.000 0.000 0.680   0     0;
                 0.000 0.000 -0.035   -pi/2  0;
                 0.000 0.670 0.000  pi/2  0;
                 0.000 0.000 0.000   -pi/2  0;
                 0.000 0.115 0.000   0     0];
 
-    q_kuka_16=[0,0,0,0,0,0];
+    q_kuka_16_2=[0,0,0,0,0,0];
 
-    qlim_kuka_16=[-185, 185; 
+    qlim_kuka_16_2=[-185, 185; 
                   -65  ,125; 
                   -220, 64; 
                   -350, 350; 
                   -130, 130; 
                   -350, 350]*pi/180;
-    offet = [0,-pi/2,0,0,0,0];
+    offet_2 = [0,-pi/2,0,0,0,0];
 
-    base = trotz(-45);
+    base_2 = transl(0,2.5,0)*trotz(-45);
     %base = eye(4);
-    path = fullfile(pwd,'STL','KR16_2');
+    path_2 = fullfile(pwd,'STL','KR16_2');
     % figure('name', 'Kuka 16');
-    workspace = [-2 2 -1 4 -1 3];
-    R=create_robot(dh_kuka_16, 'Kuka 16', q_kuka_16, qlim_kuka_16, offet, base,path,workspace);
-    save('kuka_16.mat', 'R',"q_kuka_16","qlim_kuka_16","offet","base","path","workspace","dh_kuka_16");
+    workspace_2 = [-2 2 -1 4 -1 3];
+    R2=create_robot(dh_kuka_16_2, 'Kuka 16', q_kuka_16_2, qlim_kuka_16_2, offet_2, base_2,path_2,workspace_2);
+    save('kuka_16_2.mat', 'R2',"q_kuka_16_2","qlim_kuka_16_2","offet_2","base_2","path_2","workspace_2","dh_kuka_16_2");
 
     
     

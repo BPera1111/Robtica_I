@@ -2,9 +2,11 @@
 clc; clear; close all;
 
 % Cargar el robot guardado en kuka_16.mat
-load('kuka_16.mat', 'R','path','workspace');
+load('kuka_16.mat', 'R','path','workspace','q_kuka_16');
+load('kuka_16_2.mat', 'R2','path_2','workspace_2','q_kuka_16_2');
+R2.name='Kuka 16 2';
 
-% Parámetros de la circunferencia
+%Parámetros de la circunferencia
 radio = 0.1; % Radio de la circunferencia
 centro_y = 1.25; % Centro de la circunferencia en el eje Y
 centro_z = 1; % Centro de la circunferencia en el eje Z
@@ -17,11 +19,11 @@ trayectoria_z = centro_z + radio * sin(theta); % Coordenada Z
 trayectoria_x = zeros(1, num_puntos); % Coordenada X fija (plano YZ)
 
 % Graficar la trayectoria en el plano YZ
-figure;
-plot3(trayectoria_x, trayectoria_y, trayectoria_z, 'b', 'LineWidth', 2);
+figure();
+plot3(trayectoria_x, trayectoria_y, trayectoria_z, 'b', 'LineWidth', 2); 
 xlabel('Y'); ylabel('Z');
 title('Trayectoria circular en el plano YZ');
-axis equal;
+axis ([-2 2 -1 4 -1 3]);
 
 T_rot=eye(3); % Matriz de rotación
 
@@ -72,5 +74,10 @@ for s = 1:length(secciones)
 end
 
 % Mover el robot a la posición calculada
-R.plot3d(q_trayectoria, 'path', path, 'notiles', 'nowrist', 'view', [90, 0], 'scale', 0.1);
+
+% Graficar el primer robot usando plot3d
+R.plot3d(q_trayectoria, 'path',path,'notiles', 'nowrist','view',[30,30], 'scale', 0.1);
+
+% Graficar el segundo robot también usando plot3d
+R2.plot3d(q_kuka_16, 'path',path,'notiles', 'nowrist','view',[30,30], 'scale', 0.1);
 
