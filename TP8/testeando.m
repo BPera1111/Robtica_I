@@ -25,10 +25,11 @@ qi_i = [0 0 0 0 0 0]*pi/180;
 qi_d = [0 0 0 0 0 0]*pi/180;
 
 disp('trayectoria izq')
-tra_i = ejecutar_trayectoria_soldadura_alineada(Ri,1,tx_i,ty_i,tz_i,data,qi_i);
+tra_i = ejecutar_trayectoria_soldadura_alineada_izq(Ri,1,tx_i,ty_i,tz_i,data,qi_i);
 disp('trayectoria der')
-tra_d = ejecutar_trayectoria_soldadura_alineada(Rd,1,tx_d,ty_d,tz_d,data,qi_d);
-disp(tra_i*180/pi)
+tra_d = ejecutar_trayectoria_soldadura_alineada_der(Rd,1,tx_d,ty_d,tz_d,data,qi_d);
+
+% disp(tra_d*180/pi)
 
 %% interpolación articular izq y der
 q_td = []; q_vd = []; q_ad = []; points = 2;
@@ -51,8 +52,8 @@ end
 % % Rd.plot3d(q_finald, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 % Ri.plot3d(q_ti, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 
-plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
-% plotada(Rd,q_td,q_vd,q_ad,trayectoria_x,trayectoria_y,trayectoria_z)
+% plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
+plotada(Rd,q_td,q_vd,q_ad,trayectoria_x,trayectoria_y,trayectoria_z)
 
 %% Guardar las trayectorias para no tener que calcularlas todo el tiempo
 % save('trayectorias.mat', 'tra_i', 'tra_d')
@@ -61,13 +62,7 @@ plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
 %% Cargar las trayectorias guardadas
 % load('trayectorias.mat', 'tra_i', 'tra_d')
 
-% for i=1:data(4)
-%     plot3(trayectoria_x, trayectoria_y, trayectoria_z, 'b', 'LineWidth', 0.1); 
-%     path = fullfile(pwd,'..','STL','KR16_2');
-%     Rd.plot3d(tra_d(i, :), 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
-%     Ri.plot3d(tra_i(i, :), 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
-%     % pause(0.05); % Controla la velocidad de la simulación
-% end
+
 % mostrar_simple_trayectoria(Ri, tra_i, trayectoria_x, trayectoria_y, trayectoria_z)
 % mostrar_simple_trayectoria(Rd, tra_d, trayectoria_x, trayectoria_y, trayectoria_z)
 
@@ -129,7 +124,7 @@ function [tx_d ty_d tz_d data]=tray_der()
     tx_d = zeros(1, num_puntos); % Coordenada X fija (plano YZ)
 end
 
-function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data,q_inicial)
+function q_traj = ejecutar_trayectoria_soldadura_alineada_izq(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data,q_inicial)
     % % Parámetros de la trayectoria circular
     % radio = 0.2; % Radio del tubo
     % centro_y = 0; % Centro en el eje Y
@@ -192,6 +187,93 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria
         end
 
         q_traj(i, :) = q; % Almacenar la configuración articular
+    end
+    
+    % Mover el robot a través de todas las configuraciones articulares
+    % for i = 1:num_puntos
+    %     plot3(trayectoria_x, trayectoria_y, trayectoria_z, 'b', 'LineWidth', 0.1); 
+    %     path = fullfile(pwd,'..','STL','KR16_2');
+    %     R.plot3d(q_traj(i, :), 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+    %     pause(0.05); % Controla la velocidad de la simulación
+    % end
+end
+
+function q_traj = ejecutar_trayectoria_soldadura_alineada_der(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data,q_inicial)
+    % % Parámetros de la trayectoria circular
+    % radio = 0.2; % Radio del tubo
+    % centro_y = 0; % Centro en el eje Y
+    % centro_z = 1.1; % Centro en el eje Z
+    % num_puntos = 100; % Número de puntos en la trayectoria
+    
+    % % Generación de puntos de la trayectoria circular en el plano YZ
+    % % theta = linspace(91*pi/180,271*pi/180 , num_puntos); % Ángulos de la circunferencia
+    % theta = linspace(ti,tf,num_puntos); %Ángulos de la circunferencia
+    % trayectoria_y = centro_y + radio * cos(theta); % Coordenada Y
+    % trayectoria_z = centro_z + radio * sin(theta); % Coordenada Z
+    % trayectoria_x = zeros(1, num_puntos); % Coordenada X fija (plano YZ)
+    sing = false;
+
+    radio = data(1); % Radio del tubo
+    centro_y = data(2); % Centro en el eje Y
+    centro_z = data(3); % Centro en el eje Z
+    num_puntos = data(4); % Número de puntos en la trayectoria
+    q_traj = zeros(num_puntos, R.n); % Almacenar todas las configuraciones articulares
+    % Iterar sobre cada punto de la trayectoria
+    for i = 1:num_puntos
+        % Calcula el vector de dirección hacia el centro del tubo
+        direccion = [trayectoria_x(i), centro_y - trayectoria_y(i), centro_z - trayectoria_z(i)];
+        direccion = direccion / norm(direccion); % Normalizar el vector
+        
+        % Calcular la matriz de rotación deseada
+        z_axis = direccion; % El eje Z del efector debe apuntar hacia el centro del tubo
+        x_axis = cross([0 0 1], z_axis); % Calcula el eje X ortogonal
+        x_axis = x_axis / norm(x_axis);
+        y_axis = cross(z_axis, x_axis); % Calcula el eje Y ortogonal
+        
+        % Construir la matriz de rotación deseada para el efector
+        R_desired = [x_axis; y_axis; z_axis]';
+        
+        % Matriz de transformación deseada en el punto actual
+        Td = [R_desired, [trayectoria_x(i); trayectoria_y(i); trayectoria_z(i)]; 0 0 0 1];
+        
+        % Selección de la función de cinemática inversa
+        switch Cin_Inv
+            case 1 % Función personalizada
+                q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
+            case 2 % Función de Robotics Toolbox 'ikine'
+                q = R.ikine(Td, 'mask', [1 1 1 0 0 0]); % Evita la rotación en Td
+            case 3 % Función 'ikcon'
+                q = R.ikcon(Td); % Puede ser más precisa pero más lenta
+            otherwise
+                error('Valor de Cin_Inv no válido. Use 1, 2 o 3.')
+        end
+        q(6)=0; % fijo q6
+        q(4)=-90*pi/180; % fijo q4
+
+        disp((q*180/pi)')
+        % if abs(det(R.jacob0(q)))<1e-4
+        %     disp('Singularidad--------------------------------------------')
+        %     % q(5)=-q(5);
+        % end
+
+        % Corregir la configuración articular para evitar singularidades
+        if q(5)*180/pi < 1 && q(5)*180/pi > -1
+            disp('Singularidad en q5')	
+            sing = true;
+        end
+        if sing
+            if q(5)*180/pi < 0
+                q(5)=-q(5);
+            end
+        end
+        q_traj(i, :) = q; % Almacenar la configuración articular
+
+        if i > 2
+            if q_traj(i-2,5)*180/pi <0 && q_traj(i-1,5)*180/pi >0 && q_traj(i,5)*180/pi <0
+                q_traj(i-1,5) = -q_traj(i-1,5);
+            end
+        end
+
     end
     
     % Mover el robot a través de todas las configuraciones articulares
