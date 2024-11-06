@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 clc;
 clear;
 close all;
@@ -43,7 +42,6 @@ R.plot(q)
 
 figure()
 qplot(q)
-=======
 clc;
 clear;
 close all;
@@ -88,5 +86,4 @@ R.plot(q)
 
 figure()
 qplot(q)
->>>>>>> 5d5cfbc (por favor funciona)
 xlabel('')

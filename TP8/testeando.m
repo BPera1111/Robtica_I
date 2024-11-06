@@ -20,17 +20,46 @@ disp('Tubo der')
 [tx_d ty_d tz_d data]=tray_der();
 
 %% Calculo de las trayectorias izq y der
-% disp('trayectoria izq')
-% tra_i = ejecutar_trayectoria_soldadura_alineada(Ri,3,tx_i,ty_i,tz_i,data);
-% disp('trayectoria der')
-% tra_d = ejecutar_trayectoria_soldadura_alineada(Rd,3,tx_d,ty_d,tz_d,data);
+
+qi_i = [0 0 0 0 0 0]*pi/180;
+qi_d = [0 0 0 0 0 0]*pi/180;
+
+disp('trayectoria izq')
+tra_i = ejecutar_trayectoria_soldadura_alineada(Ri,1,tx_i,ty_i,tz_i,data,qi_i);
+disp('trayectoria der')
+tra_d = ejecutar_trayectoria_soldadura_alineada(Rd,1,tx_d,ty_d,tz_d,data,qi_d);
+disp(tra_i*180/pi)
+
+%% interpolación articular izq y der
+q_td = []; q_vd = []; q_ad = []; points = 2;
+for i = 1:size(tra_d, 1)-1
+    [q_d, qd_d, qdd_d] = jtraj(tra_d(i,:), tra_d(i+1, :), points);
+    q_td = [q_td; q_d];
+    q_vd = [q_vd; qd_d];
+    q_ad = [q_ad; qdd_d];
+end
+q_ti = []; q_vi = []; q_ai = [];
+for i = 1:size(tra_i, 1)-1
+    [q_i, qd_i, qdd_i] = jtraj(tra_i(i,:), tra_i(i+1, :), points);
+    q_ti = [q_ti; q_i];
+    q_vi = [q_vi; qd_i];
+    q_ai = [q_ai; qdd_i];
+end
+
+% path = fullfile(pwd,'..','STL','KR16_2');
+% plot3(trayectoria_x, trayectoria_y, trayectoria_z, 'b', 'LineWidth', 0.1);
+% % Rd.plot3d(q_finald, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+% Ri.plot3d(q_ti, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+
+plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
+% plotada(Rd,q_td,q_vd,q_ad,trayectoria_x,trayectoria_y,trayectoria_z)
 
 %% Guardar las trayectorias para no tener que calcularlas todo el tiempo
 % save('trayectorias.mat', 'tra_i', 'tra_d')
 % disp('trayectorias guardadas')
 
 %% Cargar las trayectorias guardadas
-load('trayectorias.mat', 'tra_i', 'tra_d')
+% load('trayectorias.mat', 'tra_i', 'tra_d')
 
 % for i=1:data(4)
 %     plot3(trayectoria_x, trayectoria_y, trayectoria_z, 'b', 'LineWidth', 0.1); 
@@ -38,10 +67,11 @@ load('trayectorias.mat', 'tra_i', 'tra_d')
 %     Rd.plot3d(tra_d(i, :), 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 %     Ri.plot3d(tra_i(i, :), 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 %     % pause(0.05); % Controla la velocidad de la simulación
-
 % end
+% mostrar_simple_trayectoria(Ri, tra_i, trayectoria_x, trayectoria_y, trayectoria_z)
+% mostrar_simple_trayectoria(Rd, tra_d, trayectoria_x, trayectoria_y, trayectoria_z)
 
-mostrar_doble_trayectoria(Ri, Rd, tra_i, tra_d, trayectoria_x, trayectoria_y, trayectoria_z)
+% mostrar_doble_trayectoria(Ri, Rd, tra_i, tra_d, trayectoria_x, trayectoria_y, trayectoria_z)
 
 
 function [tx ty tz]=graf_trayectoria()
@@ -77,7 +107,7 @@ function [tx_i ty_i tz_i data]=tray_izq()
     
     % Generación de puntos de la trayectoria circular en el plano YZ
     % theta = linspace(91*pi/180,271*pi/180 , num_puntos); % Ángulos de la circunferencia
-    theta = linspace(270*pi/180,90*pi/180,num_puntos); %Ángulos de la circunferencia
+    theta = linspace(90*pi/180,270*pi/180,num_puntos); %Ángulos de la circunferencia
     ty_i = centro_y + radio * cos(theta); % Coordenada Y
     tz_i = centro_z + radio * sin(theta); % Coordenada Z
     tx_i = zeros(1, num_puntos); % Coordenada X fija (plano YZ)
@@ -93,15 +123,13 @@ function [tx_d ty_d tz_d data]=tray_der()
     
     % Generación de puntos de la trayectoria circular en el plano YZ
     % theta = linspace(91*pi/180,271*pi/180 , num_puntos); % Ángulos de la circunferencia
-    theta = linspace(269*pi/180,89*pi/180,num_puntos); %Ángulos de la circunferencia
+    theta = linspace(89*pi/180,269*pi/180,num_puntos); %Ángulos de la circunferencia
     ty_d = centro_y - radio * cos(theta); % Coordenada Y
     tz_d = centro_z - radio * sin(theta); % Coordenada Z
     tx_d = zeros(1, num_puntos); % Coordenada X fija (plano YZ)
 end
 
-
-
-function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data)
+function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data,q_inicial)
     % % Parámetros de la trayectoria circular
     % radio = 0.2; % Radio del tubo
     % centro_y = 0; % Centro en el eje Y
@@ -114,6 +142,7 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria
     % trayectoria_y = centro_y + radio * cos(theta); % Coordenada Y
     % trayectoria_z = centro_z + radio * sin(theta); % Coordenada Z
     % trayectoria_x = zeros(1, num_puntos); % Coordenada X fija (plano YZ)
+    sing = false;
 
     radio = data(1); % Radio del tubo
     centro_y = data(2); % Centro en el eje Y
@@ -141,7 +170,7 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria
         % Selección de la función de cinemática inversa
         switch Cin_Inv
             case 1 % Función personalizada
-                q = TP5B_EjercicioTF(Td, R, zeros(6,1), true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
             case 2 % Función de Robotics Toolbox 'ikine'
                 q = R.ikine(Td, 'mask', [1 1 1 0 0 0]); % Evita la rotación en Td
             case 3 % Función 'ikcon'
@@ -149,6 +178,19 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria
             otherwise
                 error('Valor de Cin_Inv no válido. Use 1, 2 o 3.')
         end
+        q(6)=0;
+        q(4)=90*pi/180;
+        % Corregir la configuración articular para evitar singularidades
+        if q(5)*180/pi < 1 && q(5)*180/pi > -1
+            disp('Singularidad en q5')	
+            sing = true;
+        end
+        if sing
+            if q(5)*180/pi < 0
+                q(5)=-q(5);
+            end
+        end
+
         q_traj(i, :) = q; % Almacenar la configuración articular
     end
     
@@ -161,7 +203,6 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria
     % end
 end
 
-
 function mostrar_doble_trayectoria(Ri, Rd, traj_i, traj_d, tray_x, tray_y, tray_z)
     % Crear la figura y establecer el espacio de trabajo
     figure;
@@ -169,8 +210,8 @@ function mostrar_doble_trayectoria(Ri, Rd, traj_i, traj_d, tray_x, tray_y, tray_
     hold on;
     
     % Configurar el espacio de trabajo de los ejes
-    axis([-1 1 -2 2 0 2]); % Ajusta estos valores según el tamaño del espacio necesario
-    axis equal;
+    axis([-2 2 -2 2 0 2]); % Ajusta estos valores según el tamaño del espacio necesario
+    % axis equal;
     
     % Etiquetas y título
     xlabel('X'); ylabel('Y'); zlabel('Z');
@@ -189,8 +230,79 @@ function mostrar_doble_trayectoria(Ri, Rd, traj_i, traj_d, tray_x, tray_y, tray_
         Rd.plot3d(traj_d(i, :), 'path', path, 'notiles', 'nowrist', 'view', [90, 0], 'scale', 0.1);
         
         % Pausar para controlar la velocidad de la animación
-        pause(0.05);
+        % pause(0.05);
     end
     hold off;
 end
 
+function mostrar_simple_trayectoria(R,traj,tray_x,tray_y,tray_z)
+    for i=1:size(traj,1)
+        plot3(tray_x, tray_y, tray_z, 'b', 'LineWidth', 0.1); 
+        path = fullfile(pwd,'..','STL','KR16_2');
+        R.plot3d(traj(i, :), 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+        % pause(0.05); % Controla la velocidad de la simulación
+    end
+
+    % % Crear la figura y establecer el espacio de trabajo
+    % figure;
+    % plot3(tray_x, tray_y, tray_z, 'b', 'LineWidth', 1.5); % Trayectoria del tubo
+    % hold on;
+
+    % % Configurar el espacio de trabajo de los ejes
+    % axis([-2 2 -2 2 0 2]); % Ajusta estos valores según el tamaño del espacio necesario
+    % % axis equal;
+
+    % % Etiquetas y título
+    % xlabel('X'); ylabel('Y'); zlabel('Z');
+    % title('Simulación de Robot con Trayectoria Circular');
+
+    % % Path para el modelo 3D de los robots
+    % path = fullfile(pwd, '..', 'STL', 'KR16_2');
+    
+    % % Número de puntos en la trayectoria
+    % num_puntos = size(traj, 1);
+
+    % % Animar ambos robots
+    % for i = 1:num_puntos
+    %     % Dibujar los robots en sus configuraciones actuales
+    %     R.plot3d(traj(i, :), 'path', path, 'notiles', 'nowrist', 'view', [90, 0], 'scale', 0.1);
+        
+    %     % Pausar para controlar la velocidad de la animación
+    %     % pause(0.05);
+    % end
+end
+
+
+function plotada(R,q,v,a,cx,cy,cz)
+
+    figure();
+    title('Trayectoria circular en el plano YZ');
+    plot3(cx,cy,cz,'b','LineWidth',1.5);
+    hold on;
+    axis([-2 2 -2 2 0 2]);
+    path = fullfile(pwd,'..','STL','KR16_2');
+    R.plot3d(q, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+    hold off;
+
+    figure();
+    title('Posición')
+    qplot(q)
+    ylabel('Posición (rad)')
+    xlabel('Tiempo (s)')
+    grid on
+
+
+    figure();
+    title('Velocidad')
+    qplot(v)
+    ylabel('Velocidad (rad/s)')
+    xlabel('Tiempo (s)')
+    grid on
+
+    figure();
+    title('Aceleración')
+    qplot(a)
+    ylabel('Aceleración (rad/s^2)')
+    xlabel('Tiempo (s)')
+    grid on
+end

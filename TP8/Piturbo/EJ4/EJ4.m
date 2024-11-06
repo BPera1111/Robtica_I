@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 clc
 clear
 close all
 
-%Definimos el robot “FANUC Paint Mate 200iA” a partir de los resultados
+%Definimos el robot ï¿½FANUC Paint Mate 200iAï¿½ a partir de los resultados
 %obtenidos en el TP4
 dh = [
     0      0.45   0.075 -pi/2  0;
@@ -13,14 +12,14 @@ dh = [
     0      0      0     -pi/2  0;
     0      0.008  0      0     0];
 R = SerialLink(dh, 'name', 'FANUC Paint Mate 200iA');
-%Aplicamos cinemática directa, obtenemos una matriz de transformación
-%homogénea y extraemos la submatriz de rotación
+%Aplicamos cinemï¿½tica directa, obtenemos una matriz de transformaciï¿½n
+%homogï¿½nea y extraemos la submatriz de rotaciï¿½n
 qq = [0 -pi/2 -pi/4 0 pi/4 0];
 T = R.fkine(qq).double();
 T_rot = T(1:3,1:3);
 
-%Armamos dos matrices de transformación homogéneas, una para la posición
-%inicial y otra para la posición final
+%Armamos dos matrices de transformaciï¿½n homogï¿½neas, una para la posiciï¿½n
+%inicial y otra para la posiciï¿½n final
 P1 = [0; 0; 0.95];
 P2 = [0.4; 0; 0.95];
 
@@ -32,18 +31,18 @@ T2 = [T_rot P2;
 q1 = R.ikine(T1, qq);
 q2 = R.ikine(T2, qq);
 
-%Con q1 y q2, interpolamos en el espacio articular utilizando la función
+%Con q1 y q2, interpolamos en el espacio articular utilizando la funciï¿½n
 %jtraj
-m = 100; %Cantidad de puntos de discretización
-[q,qd,qdd] = jtraj(q1, q2, m); %Interpolamos en el espacio articular y obtenemos la posición, la velocidad y la aceleración articulares
+m = 100; %Cantidad de puntos de discretizaciï¿½n
+[q,qd,qdd] = jtraj(q1, q2, m); %Interpolamos en el espacio articular y obtenemos la posiciï¿½n, la velocidad y la aceleraciï¿½n articulares
 
 Tc = ctraj(T1, T2, m); %Interpolamos en el espacio cartesiano
 
-%Aplicamos cinemática inversa y hallamos los valores de las variables
-%articulares para cada matriz de transformación obtenida.
+%Aplicamos cinemï¿½tica inversa y hallamos los valores de las variables
+%articulares para cada matriz de transformaciï¿½n obtenida.
 q_ctraj = R.ikine(Tc, qq);
 
-%Aplicamos la derivada numérica hacia adelante a la posición articular
+%Aplicamos la derivada numï¿½rica hacia adelante a la posiciï¿½n articular
 [row, col] = size(q_ctraj);
 qd_num = zeros(size(q_ctraj));
 qdd_num = zeros(size(q_ctraj));
@@ -59,8 +58,8 @@ for c = 1:col
     end
 end
 
-%Aplicamos cinemática directa a los vectores q obtenidos de jtraj para así
-%hallar las sucesivas matrices de transformación homogéneas y luego poder
+%Aplicamos cinemï¿½tica directa a los vectores q obtenidos de jtraj para asï¿½
+%hallar las sucesivas matrices de transformaciï¿½n homogï¿½neas y luego poder
 %comparar las sucesivas posiciones que va tomando el efector
 
 T_jtraj = R.fkine(q).double();
@@ -73,7 +72,7 @@ T_jtraj = R.fkine(q).double();
 %-------------------------------------------------------------------------
 %Inciso 1
 figure()
-title('Posición articular')
+title('Posiciï¿½n articular')
 qplot(q)
 xlabel('')
 
@@ -84,9 +83,9 @@ ylabel('Velocidad articular [rad/s]')
 xlabel('')
 
 figure()
-title('Aceleración articular')
+title('Aceleraciï¿½n articular')
 qplot(qdd)
-ylabel('Aceleración articular [rad/s^2]')
+ylabel('Aceleraciï¿½n articular [rad/s^2]')
 xlabel('')
 
 %Inciso 2
@@ -99,7 +98,7 @@ for i=1:col
     hold on
     plot(q_ctraj(:,i))
     grid on
-    title(strcat('Posición articular q',num2str(i)))
+    title(strcat('Posiciï¿½n articular q',num2str(i)))
     legend('JTRAJ', 'CTRAJ')
 end
 
@@ -119,14 +118,14 @@ end
 
 figure()
 hold on
-%Aceleración articular
+%Aceleraciï¿½n articular
 for i=1:col
     subplot(3,2,i)
     plot(qdd(:,i))
     hold on
     plot(qdd_num(:,i))
     grid on
-    title(strcat('Aceleración articular q',num2str(i)))
+    title(strcat('Aceleraciï¿½n articular q',num2str(i)))
     legend('JTRAJ', 'CTRAJ + Der.NUM')
 end
 
@@ -137,7 +136,7 @@ subplot(3,1,1)
 plot(x_ctraj)
 hold on
 plot(x_jtraj)
-title('Posición X Efector');
+title('Posiciï¿½n X Efector');
 grid on
 legend('CTRAJ', 'JTRAJ');
 
@@ -145,7 +144,7 @@ subplot(3,1,2)
 plot(y_ctraj)
 hold on
 plot(y_jtraj)
-title('Posición Y Efector');
+title('Posiciï¿½n Y Efector');
 grid on
 legend('CTRAJ', 'JTRAJ');
 
@@ -153,7 +152,7 @@ subplot(3,1,3)
 plot(z_ctraj)
 hold on
 plot(z_jtraj)
-title('Posición Z Efector');
+title('Posiciï¿½n Z Efector');
 grid on
 legend('CTRAJ', 'JTRAJ');
 
@@ -167,12 +166,11 @@ legend('CTRAJ', 'JTRAJ')
 title('Z vs X')
 xlabel('X [m]')
 ylabel('Z [m]')
-=======
 clc
 clear
 close all
 
-%Definimos el robot “FANUC Paint Mate 200iA” a partir de los resultados
+%Definimos el robot ï¿½FANUC Paint Mate 200iAï¿½ a partir de los resultados
 %obtenidos en el TP4
 dh = [
     0      0.45   0.075 -pi/2  0;
@@ -182,14 +180,14 @@ dh = [
     0      0      0     -pi/2  0;
     0      0.008  0      0     0];
 R = SerialLink(dh, 'name', 'FANUC Paint Mate 200iA');
-%Aplicamos cinemática directa, obtenemos una matriz de transformación
-%homogénea y extraemos la submatriz de rotación
+%Aplicamos cinemï¿½tica directa, obtenemos una matriz de transformaciï¿½n
+%homogï¿½nea y extraemos la submatriz de rotaciï¿½n
 qq = [0 -pi/2 -pi/4 0 pi/4 0];
 T = R.fkine(qq).double();
 T_rot = T(1:3,1:3);
 
-%Armamos dos matrices de transformación homogéneas, una para la posición
-%inicial y otra para la posición final
+%Armamos dos matrices de transformaciï¿½n homogï¿½neas, una para la posiciï¿½n
+%inicial y otra para la posiciï¿½n final
 P1 = [0; 0; 0.95];
 P2 = [0.4; 0; 0.95];
 
@@ -201,18 +199,18 @@ T2 = [T_rot P2;
 q1 = R.ikine(T1, qq);
 q2 = R.ikine(T2, qq);
 
-%Con q1 y q2, interpolamos en el espacio articular utilizando la función
+%Con q1 y q2, interpolamos en el espacio articular utilizando la funciï¿½n
 %jtraj
-m = 100; %Cantidad de puntos de discretización
-[q,qd,qdd] = jtraj(q1, q2, m); %Interpolamos en el espacio articular y obtenemos la posición, la velocidad y la aceleración articulares
+m = 100; %Cantidad de puntos de discretizaciï¿½n
+[q,qd,qdd] = jtraj(q1, q2, m); %Interpolamos en el espacio articular y obtenemos la posiciï¿½n, la velocidad y la aceleraciï¿½n articulares
 
 Tc = ctraj(T1, T2, m); %Interpolamos en el espacio cartesiano
 
-%Aplicamos cinemática inversa y hallamos los valores de las variables
-%articulares para cada matriz de transformación obtenida.
+%Aplicamos cinemï¿½tica inversa y hallamos los valores de las variables
+%articulares para cada matriz de transformaciï¿½n obtenida.
 q_ctraj = R.ikine(Tc, qq);
 
-%Aplicamos la derivada numérica hacia adelante a la posición articular
+%Aplicamos la derivada numï¿½rica hacia adelante a la posiciï¿½n articular
 [row, col] = size(q_ctraj);
 qd_num = zeros(size(q_ctraj));
 qdd_num = zeros(size(q_ctraj));
@@ -228,8 +226,8 @@ for c = 1:col
     end
 end
 
-%Aplicamos cinemática directa a los vectores q obtenidos de jtraj para así
-%hallar las sucesivas matrices de transformación homogéneas y luego poder
+%Aplicamos cinemï¿½tica directa a los vectores q obtenidos de jtraj para asï¿½
+%hallar las sucesivas matrices de transformaciï¿½n homogï¿½neas y luego poder
 %comparar las sucesivas posiciones que va tomando el efector
 
 T_jtraj = R.fkine(q).double();
@@ -242,7 +240,7 @@ T_jtraj = R.fkine(q).double();
 %-------------------------------------------------------------------------
 %Inciso 1
 figure()
-title('Posición articular')
+title('Posiciï¿½n articular')
 qplot(q)
 xlabel('')
 
@@ -253,9 +251,9 @@ ylabel('Velocidad articular [rad/s]')
 xlabel('')
 
 figure()
-title('Aceleración articular')
+title('Aceleraciï¿½n articular')
 qplot(qdd)
-ylabel('Aceleración articular [rad/s^2]')
+ylabel('Aceleraciï¿½n articular [rad/s^2]')
 xlabel('')
 
 %Inciso 2
@@ -268,7 +266,7 @@ for i=1:col
     hold on
     plot(q_ctraj(:,i))
     grid on
-    title(strcat('Posición articular q',num2str(i)))
+    title(strcat('Posiciï¿½n articular q',num2str(i)))
     legend('JTRAJ', 'CTRAJ')
 end
 
@@ -288,14 +286,14 @@ end
 
 figure()
 hold on
-%Aceleración articular
+%Aceleraciï¿½n articular
 for i=1:col
     subplot(3,2,i)
     plot(qdd(:,i))
     hold on
     plot(qdd_num(:,i))
     grid on
-    title(strcat('Aceleración articular q',num2str(i)))
+    title(strcat('Aceleraciï¿½n articular q',num2str(i)))
     legend('JTRAJ', 'CTRAJ + Der.NUM')
 end
 
@@ -306,7 +304,7 @@ subplot(3,1,1)
 plot(x_ctraj)
 hold on
 plot(x_jtraj)
-title('Posición X Efector');
+title('Posiciï¿½n X Efector');
 grid on
 legend('CTRAJ', 'JTRAJ');
 
@@ -314,7 +312,7 @@ subplot(3,1,2)
 plot(y_ctraj)
 hold on
 plot(y_jtraj)
-title('Posición Y Efector');
+title('Posiciï¿½n Y Efector');
 grid on
 legend('CTRAJ', 'JTRAJ');
 
@@ -322,7 +320,7 @@ subplot(3,1,3)
 plot(z_ctraj)
 hold on
 plot(z_jtraj)
-title('Posición Z Efector');
+title('Posiciï¿½n Z Efector');
 grid on
 legend('CTRAJ', 'JTRAJ');
 
@@ -336,4 +334,3 @@ legend('CTRAJ', 'JTRAJ')
 title('Z vs X')
 xlabel('X [m]')
 ylabel('Z [m]')
->>>>>>> 5d5cfbc (por favor funciona)

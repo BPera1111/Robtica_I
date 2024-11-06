@@ -57,7 +57,7 @@ end
 
 % Mover el robot a la posición calculada
 
-%R.plot3d(q_final, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+% R.plot3d(q_final, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 
 
 % Graficar el segundo robot también usando plot3d

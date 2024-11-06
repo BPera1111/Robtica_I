@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 clc
 clear
 close all
 
-%Definimos el robot “FANUC Paint Mate 200iA” a partir de los resultados
+%Definimos el robot ï¿½FANUC Paint Mate 200iAï¿½ a partir de los resultados
 %obtenidos en el TP4
 dh = [
     0      0.45   0.075 -pi/2  0;
@@ -23,13 +22,13 @@ via_points = [q1
               q2;
               q3;
               q4]; %Vector de puntos de paso
-qd_max = [1, 1, 1, 1, 1, 1]; %Vector de velocidades máximas (arbitrario)
+qd_max = [1, 1, 1, 1, 1, 1]; %Vector de velocidades mï¿½ximas (arbitrario)
 
 %Con estos vectores articulares, interpolamos entre ellos utilizando mstraj
 dt = 0.05;
 q = mstraj(via_points, qd_max, [], q1, dt, 1);
 
-%Aplicamos derivación numérica para hallar la velocidad y aceleración
+%Aplicamos derivaciï¿½n numï¿½rica para hallar la velocidad y aceleraciï¿½n
 %articular
 [row, col] = size(q);
 qd_num = zeros(size(q));
@@ -50,7 +49,7 @@ R.plot(q)
 
 
 figure()
-title('Posición articular')
+title('Posiciï¿½n articular')
 qplot(q)
 xlabel('')
 
@@ -61,15 +60,14 @@ ylabel('Velocidad articular [rad/s]')
 xlabel('')
 
 figure()
-title('Aceleración articular')
+title('Aceleraciï¿½n articular')
 qplot(qdd_num)
-ylabel('Aceleración articular [rad/s^2]')
-=======
+ylabel('Aceleraciï¿½n articular [rad/s^2]')
 clc
 clear
 close all
 
-%Definimos el robot “FANUC Paint Mate 200iA” a partir de los resultados
+%Definimos el robot ï¿½FANUC Paint Mate 200iAï¿½ a partir de los resultados
 %obtenidos en el TP4
 dh = [
     0      0.45   0.075 -pi/2  0;
@@ -89,13 +87,13 @@ via_points = [q1
               q2;
               q3;
               q4]; %Vector de puntos de paso
-qd_max = [1, 1, 1, 1, 1, 1]; %Vector de velocidades máximas (arbitrario)
+qd_max = [1, 1, 1, 1, 1, 1]; %Vector de velocidades mï¿½ximas (arbitrario)
 
 %Con estos vectores articulares, interpolamos entre ellos utilizando mstraj
 dt = 0.05;
 q = mstraj(via_points, qd_max, [], q1, dt, 1);
 
-%Aplicamos derivación numérica para hallar la velocidad y aceleración
+%Aplicamos derivaciï¿½n numï¿½rica para hallar la velocidad y aceleraciï¿½n
 %articular
 [row, col] = size(q);
 qd_num = zeros(size(q));
@@ -116,7 +114,7 @@ R.plot(q)
 
 
 figure()
-title('Posición articular')
+title('Posiciï¿½n articular')
 qplot(q)
 xlabel('')
 
@@ -127,8 +125,7 @@ ylabel('Velocidad articular [rad/s]')
 xlabel('')
 
 figure()
-title('Aceleración articular')
+title('Aceleraciï¿½n articular')
 qplot(qdd_num)
-ylabel('Aceleración articular [rad/s^2]')
->>>>>>> 5d5cfbc (por favor funciona)
+ylabel('Aceleraciï¿½n articular [rad/s^2]')
 xlabel('')

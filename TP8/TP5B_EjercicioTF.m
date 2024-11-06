@@ -96,7 +96,7 @@ G = acos((L2^2 + r^2 - L3^2) / (2 * r * L2));
 
 %Verificamos si G es complejo
 if imag(G) > 0
-    warning('Solucion compleja en calcular_q2; revise para,etros.')
+    % warning('Solucion compleja en calcular_q2; revise para,etros.')
 end
 %Angulo desfasado pi
 q2(1) = B - real(G);
@@ -133,7 +133,7 @@ if abs(T36(3,3) - 1) < eps
     %   > q4 y q6 generan el mismo movimiento
     %   > q5 = 0 (o q5 = 180º)
     %   > se asume q4 = q4_anterior
-    warning('Caso degenerado')
+    % warning('Caso degenerado')
     q4(1) = q0(4);
     q5(1) = 0;
     q6(1) = atan2(T36(2,1), T36(1,1)) - q4(1);

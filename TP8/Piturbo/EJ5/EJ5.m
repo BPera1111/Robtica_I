@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 clc
 clear
 close all
-%Definimos el robot “FANUC Paint Mate 200iA” a partir de los resultados
+%Definimos el robot ï¿½FANUC Paint Mate 200iAï¿½ a partir de los resultados
 %obtenidos en el TP4
 dh = [
     0      0.45   0.075 -pi/2  0;
@@ -19,7 +18,7 @@ q3 = [pi -pi/4 -pi/4 -2*pi/5 -3*pi/5 -pi/2];
 q4 = [pi/5 0 -pi/5 -pi/3 -2*pi/5 -pi];
 
 %Con estos vectores articulares, interpolamos entre ellos con 100 puntos de
-%discretización
+%discretizaciï¿½n
 m = 100;
 [q_traj_1, qd1, qdd1] = jtraj(q1,q2,m);
 [q_traj_2, qd2, qdd2] = jtraj(q2,q3,m);
@@ -36,14 +35,14 @@ qd = [qd1;
 qdd = [qdd1;
       qdd2;
       qdd3];
-%Finalmente realizamos una simulación con el robot FANUC Paint Mate 200iA
+%Finalmente realizamos una simulaciï¿½n con el robot FANUC Paint Mate 200iA
 figure();
 R.plot(q);
 
-%Ploteamos la evolución temporal de la posición, velocidad y aceleración
+%Ploteamos la evoluciï¿½n temporal de la posiciï¿½n, velocidad y aceleraciï¿½n
 %articular
 figure()
-title('Posición articular')
+title('Posiciï¿½n articular')
 qplot(q)
 xlabel('')
 
@@ -54,14 +53,13 @@ ylabel('Velocidad articular [rad/s]')
 xlabel('')
 
 figure()
-title('Aceleración articular')
+title('Aceleraciï¿½n articular')
 qplot(qdd)
-ylabel('Aceleración articular [rad/s^2]')
-=======
+ylabel('Aceleraciï¿½n articular [rad/s^2]')
 clc
 clear
 close all
-%Definimos el robot “FANUC Paint Mate 200iA” a partir de los resultados
+%Definimos el robot ï¿½FANUC Paint Mate 200iAï¿½ a partir de los resultados
 %obtenidos en el TP4
 dh = [
     0      0.45   0.075 -pi/2  0;
@@ -78,7 +76,7 @@ q3 = [pi -pi/4 -pi/4 -2*pi/5 -3*pi/5 -pi/2];
 q4 = [pi/5 0 -pi/5 -pi/3 -2*pi/5 -pi];
 
 %Con estos vectores articulares, interpolamos entre ellos con 100 puntos de
-%discretización
+%discretizaciï¿½n
 m = 100;
 [q_traj_1, qd1, qdd1] = jtraj(q1,q2,m);
 [q_traj_2, qd2, qdd2] = jtraj(q2,q3,m);
@@ -95,14 +93,14 @@ qd = [qd1;
 qdd = [qdd1;
       qdd2;
       qdd3];
-%Finalmente realizamos una simulación con el robot FANUC Paint Mate 200iA
+%Finalmente realizamos una simulaciï¿½n con el robot FANUC Paint Mate 200iA
 figure();
 R.plot(q);
 
-%Ploteamos la evolución temporal de la posición, velocidad y aceleración
+%Ploteamos la evoluciï¿½n temporal de la posiciï¿½n, velocidad y aceleraciï¿½n
 %articular
 figure()
-title('Posición articular')
+title('Posiciï¿½n articular')
 qplot(q)
 xlabel('')
 
@@ -113,8 +111,7 @@ ylabel('Velocidad articular [rad/s]')
 xlabel('')
 
 figure()
-title('Aceleración articular')
+title('Aceleraciï¿½n articular')
 qplot(qdd)
-ylabel('Aceleración articular [rad/s^2]')
->>>>>>> 5d5cfbc (por favor funciona)
+ylabel('Aceleraciï¿½n articular [rad/s^2]')
 xlabel('')
