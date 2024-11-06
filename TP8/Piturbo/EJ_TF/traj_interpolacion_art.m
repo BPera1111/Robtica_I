@@ -2,7 +2,7 @@ puntos_trayectoria
 
 dt=0.1;
 
-%Interpolación articular ROBOT 1
+%Interpolaciï¿½n articular ROBOT 1
 q0 = CinInv(T0, R1, q_ref, 1);
 q1 = CinInv(T1, R1, q_ref, 1);
 q2 = CinInv(T2, R1, q_ref, 1);
@@ -29,14 +29,14 @@ q4 = CinInv(T4, R1, q_ref, 1);
 % x1_art = zeros(1,size(T_traj1_art,3));
 % y1_art = zeros(1,size(T_traj1_art,3));
 % z1_art = zeros(1,size(T_traj1_art,3));
-% %Posición del efector
+% %Posiciï¿½n del efector
 % for i=1:size(T_traj1_art,3)
 %     x1_art(i) = T_traj1_art(1,4,i);
 %     y1_art(i) = T_traj1_art(2,4,i);
 %     z1_art(i) = T_traj1_art(3,4,i);
 % end
 % 
-% %Cálculo de la velocidad del efector mediante derivación numérica
+% %Cï¿½lculo de la velocidad del efector mediante derivaciï¿½n numï¿½rica
 % [row, col] = size(x1_art);
 % v1_x = zeros(size(x1_art));
 % v1_y = zeros(size(x1_art));
@@ -47,12 +47,12 @@ q4 = CinInv(T4, R1, q_ref, 1);
 %     v1_y(1,c) = (y1_art(1,c+1) - y1_art(1,c))/dt;
 %     v1_z(1,c) = (z1_art(1,c+1) - z1_art(1,c))/dt; 
 % end
-% %Cálculo del módulo de la velocidad
+% %Cï¿½lculo del mï¿½dulo de la velocidad
 % for c = 1:col
 %     v1(1,c) = sqrt(v1_x(1,c)^2 + v1_y(1,c)^2 + v1_z(1,c)^2);
 % end
 % 
-% %Cálculo de la aceleración del efector mediante derivación numérica
+% %Cï¿½lculo de la aceleraciï¿½n del efector mediante derivaciï¿½n numï¿½rica
 % a1_x = zeros(size(x1_art));
 % a1_y = zeros(size(x1_art));
 % a1_z = zeros(size(x1_art));
@@ -62,16 +62,16 @@ q4 = CinInv(T4, R1, q_ref, 1);
 %     a1_y(1,c) = (v1_y(1,c+1) - v1_y(1,c))/dt;
 %     a1_z(1,c) = (v1_z(1,c+1) - v1_z(1,c))/dt; 
 % end
-% %Cálculo del módulo de la aceleración
+% %Cï¿½lculo del mï¿½dulo de la aceleraciï¿½n
 % for c = 1:col
 %     a1(1,c) = sqrt(a1_x(1,c)^2 + a1_y(1,c)^2 + a1_z(1,c)^2);
 % end
 % 
 % 
 % 
-% %Gráficas ROBOT 1
+% %Grï¿½ficas ROBOT 1
 % figure()
-% title('Posición articular - ROBOT 1')
+% title('Posiciï¿½n articular - ROBOT 1')
 % qplot(q_traj1)
 % xlabel('')
 % grid on
@@ -84,9 +84,9 @@ q4 = CinInv(T4, R1, q_ref, 1);
 % grid on
 % 
 % figure()
-% title('Aceleración articular - ROBOT 1')
+% title('Aceleraciï¿½n articular - ROBOT 1')
 % qplot(qdd1)
-% ylabel('Aceleración articular [rad/s^2]')
+% ylabel('Aceleraciï¿½n articular [rad/s^2]')
 % xlabel('')
 % grid on
 % 
@@ -96,10 +96,10 @@ q4 = CinInv(T4, R1, q_ref, 1);
 % plot(y1_art)
 % hold on
 % plot(z1_art)
-% title('Posición del efector - ROBOT 1')
+% title('Posiciï¿½n del efector - ROBOT 1')
 % legend('x', 'y', 'z')
 % grid on
-% ylabel('Posición [m]')
+% ylabel('Posiciï¿½n [m]')
 % 
 % figure()
 % plot(v1)
@@ -109,12 +109,12 @@ q4 = CinInv(T4, R1, q_ref, 1);
 % 
 % figure()
 % plot(a1)
-% title('Aceleración del efector - ROBOT 1')
+% title('Aceleraciï¿½n del efector - ROBOT 1')
 % grid on
-% ylabel('Aceleración [m/s^2]')
+% ylabel('Aceleraciï¿½n [m/s^2]')
 
 
-%Interpolación articular ROBOT 2
+%Interpolaciï¿½n articular ROBOT 2
 q2_0 = CinInv(T2_0, R2, q_ref, 1);
 q2_1 = CinInv(T2_1, R2, q_ref, 1);
 q2_2 = CinInv(T2_2, R2, q_ref, 1);
@@ -151,14 +151,14 @@ q2_6 = CinInv(T2_6, R2, q2_5, 1);
 % y2_art = zeros(1,size(T_traj2_art,3));
 % z2_art = zeros(1,size(T_traj2_art,3));
 % 
-% %Posición del efector
+% %Posiciï¿½n del efector
 % for i=1:size(T_traj2_art,3)
 %     x2_art(i) = T_traj2_art(1,4,i);
 %     y2_art(i) = T_traj2_art(2,4,i);
 %     z2_art(i) = T_traj2_art(3,4,i);
 % end
 % 
-% %Cálculo de la velocidad del efector mediante derivación numérica
+% %Cï¿½lculo de la velocidad del efector mediante derivaciï¿½n numï¿½rica
 % [row, col] = size(x2_art);
 % v2_x = zeros(size(x2_art));
 % v2_y = zeros(size(x2_art));
@@ -169,12 +169,12 @@ q2_6 = CinInv(T2_6, R2, q2_5, 1);
 %     v2_y(1,c) = (y2_art(1,c+1) - y2_art(1,c))/dt;
 %     v2_z(1,c) = (z2_art(1,c+1) - z2_art(1,c))/dt; 
 % end
-% %Cálculo del módulo de la velocidad
+% %Cï¿½lculo del mï¿½dulo de la velocidad
 % for c = 1:col
 %     v2(1,c) = sqrt(v2_x(1,c)^2 + v2_y(1,c)^2 + v2_z(1,c)^2);
 % end
 % 
-% %Cálculo de la aceleración del efector mediante derivación numérica
+% %Cï¿½lculo de la aceleraciï¿½n del efector mediante derivaciï¿½n numï¿½rica
 % a2_x = zeros(size(x2_art));
 % a2_y = zeros(size(x2_art));
 % a2_z = zeros(size(x2_art));
@@ -184,14 +184,14 @@ q2_6 = CinInv(T2_6, R2, q2_5, 1);
 %     a2_y(1,c) = (v2_y(1,c+1) - v2_y(1,c))/dt;
 %     a2_z(1,c) = (v2_z(1,c+1) - v2_z(1,c))/dt; 
 % end
-% %Cálculo del módulo de la aceleración
+% %Cï¿½lculo del mï¿½dulo de la aceleraciï¿½n
 % for c = 1:col
 %     a2(1,c) = sqrt(a2_x(1,c)^2 + a2_y(1,c)^2 + a2_z(1,c)^2);
 % end
 % 
-% %Gráficas ROBOT 2
+% %Grï¿½ficas ROBOT 2
 % figure()
-% title('Posición articular - ROBOT 2')
+% title('Posiciï¿½n articular - ROBOT 2')
 % qplot(q_traj2)
 % xlabel('')
 % grid on
@@ -204,9 +204,9 @@ q2_6 = CinInv(T2_6, R2, q2_5, 1);
 % grid on
 % 
 % figure()
-% title('Aceleración articular - ROBOT 2')
+% title('Aceleraciï¿½n articular - ROBOT 2')
 % qplot(qdd2)
-% ylabel('Aceleración articular [rad/s^2]')
+% ylabel('Aceleraciï¿½n articular [rad/s^2]')
 % xlabel('')
 % grid on
 % 
@@ -216,10 +216,10 @@ q2_6 = CinInv(T2_6, R2, q2_5, 1);
 % plot(y2_art)
 % hold on
 % plot(z2_art)
-% title('Posición del efector - ROBOT 2')
+% title('Posiciï¿½n del efector - ROBOT 2')
 % legend('x', 'y', 'z')
 % grid on
-% ylabel('Posición [m]')
+% ylabel('Posiciï¿½n [m]')
 % 
 % figure()
 % plot(v2)
@@ -229,12 +229,12 @@ q2_6 = CinInv(T2_6, R2, q2_5, 1);
 % 
 % figure()
 % plot(a2)
-% title('Aceleración del efector - ROBOT 2')
+% title('Aceleraciï¿½n del efector - ROBOT 2')
 % grid on
-% ylabel('Aceleración [m/s^2]')
+% ylabel('Aceleraciï¿½n [m/s^2]')
 
 
-%Interpolación articular ROBOT 3
+%Interpolaciï¿½n articular ROBOT 3
 q3_0 = CinInv(T3_0,R3, q_ref, 1);
 q3_1 = CinInv(T3_1,R3, q3_0, 1);
 q3_2 = CinInv(T3_2, R3, q3_1, 1);
@@ -262,14 +262,14 @@ x3_art = zeros(1,size(T_traj3_art,3));
 y3_art = zeros(1,size(T_traj3_art,3));
 z3_art = zeros(1,size(T_traj3_art,3));
 
-%Posición del efector
+%Posiciï¿½n del efector
 for i=1:size(T_traj3_art,3)
     x3_art(i) = T_traj3_art(1,4,i);
     y3_art(i) = T_traj3_art(2,4,i);
     z3_art(i) = T_traj3_art(3,4,i);
 end
 
-%Cálculo de la velocidad del efector mediante derivación numérica
+%Cï¿½lculo de la velocidad del efector mediante derivaciï¿½n numï¿½rica
 [row, col] = size(x3_art);
 v3_x = zeros(size(x3_art));
 v3_y = zeros(size(x3_art));
@@ -280,12 +280,12 @@ for c = 1:col-1
     v3_y(1,c) = (y3_art(1,c+1) - y3_art(1,c))/dt;
     v3_z(1,c) = (z3_art(1,c+1) - z3_art(1,c))/dt; 
 end
-%Cálculo del módulo de la velocidad
+%Cï¿½lculo del mï¿½dulo de la velocidad
 for c = 1:col
     v3(1,c) = sqrt(v3_x(1,c)^2 + v3_y(1,c)^2 + v3_z(1,c)^2);
 end
 
-%Cálculo de la aceleración del efector mediante derivación numérica
+%Cï¿½lculo de la aceleraciï¿½n del efector mediante derivaciï¿½n numï¿½rica
 a3_x = zeros(size(x3_art));
 a3_y = zeros(size(x3_art));
 a3_z = zeros(size(x3_art));
@@ -295,14 +295,14 @@ for c = 1:col-1
     a3_y(1,c) = (v3_y(1,c+1) - v3_y(1,c))/dt;
     a3_z(1,c) = (v3_z(1,c+1) - v3_z(1,c))/dt; 
 end
-%Cálculo del módulo de la aceleración
+%Cï¿½lculo del mï¿½dulo de la aceleraciï¿½n
 for c = 1:col
     a3(1,c) = sqrt(a3_x(1,c)^2 + a3_y(1,c)^2 + a3_z(1,c)^2);
 end
 
-% %Gráficas ROBOT 3
+% %Grï¿½ficas ROBOT 3
 % figure()
-% title('Posición articular - ROBOT 3')
+% title('Posiciï¿½n articular - ROBOT 3')
 % qplot(q_traj3)
 % xlabel('')
 % grid on
@@ -315,9 +315,9 @@ end
 % grid on
 % 
 % figure()
-% title('Aceleración articular - ROBOT 3')
+% title('Aceleraciï¿½n articular - ROBOT 3')
 % qplot(qdd3)
-% ylabel('Aceleración articular [rad/s^2]')
+% ylabel('Aceleraciï¿½n articular [rad/s^2]')
 % xlabel('')
 % grid on
 % 
@@ -327,10 +327,10 @@ end
 % plot(y3_art)
 % hold on
 % plot(z3_art)
-% title('Posición del efector - ROBOT 3')
+% title('Posiciï¿½n del efector - ROBOT 3')
 % legend('x', 'y', 'z')
 % grid on
-% ylabel('Posición [m]')
+% ylabel('Posiciï¿½n [m]')
 % 
 % figure()
 % plot(v3)
@@ -340,9 +340,9 @@ end
 % 
 % figure()
 % plot(a3)
-% title('Aceleración del efector - ROBOT 3')
+% title('Aceleraciï¿½n del efector - ROBOT 3')
 % grid on
-% ylabel('Aceleración [m/s^2]')
+% ylabel('Aceleraciï¿½n [m/s^2]')
 
 
 W = [-3 5 -3 10 -3 5];
@@ -360,44 +360,44 @@ R2.plot(q_traj2,'workspace',W, 'scale',0.5,'jointdiam',0.5,'notiles')
 R3.plot(q_traj3,'workspace',W, 'scale',0.5,'jointdiam',0.5,'notiles')
 
 
-%DESCOMENTAR SI SE QUIERE REALIZAR UNA ANIMACIÓN DE LAS TRAYECTORIAS
-%DE TODOS LOS ROBOTS SIMULTÁNEAMENTE (EL GRÁFICO SE VE LENTO PERO EN EL
+%DESCOMENTAR SI SE QUIERE REALIZAR UNA ANIMACIï¿½N DE LAS TRAYECTORIAS
+%DE TODOS LOS ROBOTS SIMULTï¿½NEAMENTE (EL GRï¿½FICO SE VE LENTO PERO EN EL
 %ARCHIVO SE VE BIEN)
-% index_1 = 1;
-% index_2 = 1;
-% index_3 = 1;
-% while(1)
-%     if index_1 <= size(q_traj1,1)
-%        R1.plot(q_traj1(index_1,:))
-%     else
-%         R1.plot(q_traj1(end, :))
-%     end 
-%     if index_2 <= size(q_traj2,1)
-%        R2.plot(q_traj2(index_2,:))
-%     else
-%         R2.plot(q_traj2(end,:))
-%     end
-%     if index_3 <= size(q_traj3,1)
-%        R3.plot(q_traj3(index_3,:)) 
-%     else
-%         R3.plot(q_traj3(end,:))
-%     end
-%     R2.plot(q_traj2(index_2,:))
-%     R3.plot(q_traj3(index_3,:))
-%      index_1 = index_1 + 1;
-%      index_2 = index_2 + 1;
-%      index_3 = index_3 + 1;
-%     if(index_1 > size(q_traj1,1))
-%         index_1 = 1;
-%     end
-%     if(index_2 > size(q_traj2,1))
-%         index_2 = 1;
-%     end
-%     if(index_3 > size(q_traj3,1))
-%         index_3 = 1;
-%     end
-%       if(index_1 > size(q_traj1,1) && index_2>size(q_traj2,1) && index_3 > size(q_traj3,1))
-%           disp("Saliendo")
-%           break
-%       end
-% end
+index_1 = 1;
+index_2 = 1;
+index_3 = 1;
+while(1)
+    if index_1 <= size(q_traj1,1)
+       R1.plot(q_traj1(index_1,:))
+    else
+        R1.plot(q_traj1(end, :))
+    end 
+    if index_2 <= size(q_traj2,1)
+       R2.plot(q_traj2(index_2,:))
+    else
+        R2.plot(q_traj2(end,:))
+    end
+    if index_3 <= size(q_traj3,1)
+       R3.plot(q_traj3(index_3,:)) 
+    else
+        R3.plot(q_traj3(end,:))
+    end
+    R2.plot(q_traj2(index_2,:))
+    R3.plot(q_traj3(index_3,:))
+     index_1 = index_1 + 1;
+     index_2 = index_2 + 1;
+     index_3 = index_3 + 1;
+    if(index_1 > size(q_traj1,1))
+        index_1 = 1;
+    end
+    if(index_2 > size(q_traj2,1))
+        index_2 = 1;
+    end
+    if(index_3 > size(q_traj3,1))
+        index_3 = 1;
+    end
+      if(index_1 > size(q_traj1,1) && index_2>size(q_traj2,1) && index_3 > size(q_traj3,1))
+          disp("Saliendo")
+          break
+      end
+end

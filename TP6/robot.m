@@ -38,6 +38,6 @@ function R =create_robot(dh, name, q, qlim, offset,base,path,workspace)
     R.offset = offset;
     R.qlim = qlim;
     % R.plot(q, 'scale', 0.1, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);
-    % R.teach();
+    R.teach();
     % R.plot3d(q, 'path',path, 'nowrist', 'noarrow', 'view', [-30 30], 'delay', 0.01);
 end
