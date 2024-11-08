@@ -49,20 +49,27 @@ function [Q,qq] = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
     qq = qq - R.offset' * ones(1,8);
     % Selección de solución ---------------------------------------------------
     if mejor == true
-        Qaux = qq  - q_kuka_16' * ones(1,8);
-        %disp('Soluciones de Cinemática Inversa:')
-        %disp(Qaux*180/pi)
+        Qaux = qq - q_kuka_16' * ones(1,8);
+        % Par de ponderación para el ángulo q4
+        peso_q1 = 2;  % Ajusta este valor para controlar la importancia de q1
+        peso_q4 = 1;  % Ajusta este valor para controlar la importancia de q4
         normas = zeros(1,8);
-        for i=1:8
-            normas(i) = norm(Qaux(:,i));
+        for i = 1:8
+            % Calcula la diferencia en q4 entre la solución actual y la configuración actual
+            diferencia_q1 = abs(Qaux(1, i));
+            diferencia_q4 = abs(Qaux(4, i));
+            
+            % Calcula la norma, ponderando la diferencia de q4
+            normas(i) = norm(Qaux(:, i)) + peso_q1 * diferencia_q1 + peso_q4 * diferencia_q4;
         end
-        [~,pos] = min(normas);
+        [~, pos] = min(normas);
         Q = qq(:, pos);
-        %disp('Mejor solución:')
-        %disp(Q*180/pi)
+        % disp(qq)
+        % disp(Q)
     else
-        Q = qq
+        Q = qq;
     end
+    
 end
 
 
@@ -133,7 +140,7 @@ if abs(T36(3,3) - 1) < eps
     %   > q4 y q6 generan el mismo movimiento
     %   > q5 = 0 (o q5 = 180º)
     %   > se asume q4 = q4_anterior
-    % warning('Caso degenerado')
+    warning('Caso degenerado')
     q4(1) = q0(4);
     q5(1) = 0;
     q6(1) = atan2(T36(2,1), T36(1,1)) - q4(1);
@@ -143,7 +150,7 @@ if abs(T36(3,3) - 1) < eps
 else
     % solución normal:
     q4(1) = atan2(T36(2,3), T36(1,3)); %atan2(-T36(2,3), -T36(1,3))
-    if q4(1) > 0, q4(2) = q4(1) - pi; else, q4(2) = q4(1) + pi; end
+    if q4(1) > 0.01, q4(2) = q4(1) - pi; else, q4(2) = q4(1) + pi; end
     q5 = zeros(1,2);
     q6 = q5;
     for i=1:2
@@ -155,5 +162,10 @@ else
         T6 = invHomog(T5) * T6;
         q6(i) = atan2(T6(2,1),T6(1,1));
     end
+    %chequear que q5 no salga del espacio articular y si es asi usar su complemento
+    if q5(1) > R.qlim(5,2), q5(1) = q5(1) - 2*pi; end
+    if q5(1) < R.qlim(5,1), q5(1) = q5(1) + 2*pi; end
+    if q5(2) > R.qlim(5,2), q5(2) = q5(2) - 2*pi; end
+    if q5(2) < R.qlim(5,1), q5(2) = q5(2) + 2*pi; end
 end
 end

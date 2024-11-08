@@ -52,8 +52,8 @@ end
 % % Rd.plot3d(q_finald, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 % Ri.plot3d(q_ti, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 
-plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
-% plotada(Rd,q_td,q_vd,q_ad,trayectoria_x,trayectoria_y,trayectoria_z)
+%plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
+plotada(Rd,q_td,q_vd,q_ad,trayectoria_x,trayectoria_y,trayectoria_z)
 
 %% Guardar las trayectorias para no tener que calcularlas todo el tiempo
 % save('trayectorias.mat', 'tra_i', 'tra_d')
@@ -169,7 +169,7 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_izq(R, Cin_Inv,trayect
                     q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
                 end
                 if i > 1
-                    q = TP5B_EjercicioTF(Td, R, q_traj(i-1, :), true) % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                    q = TP5B_EjercicioTF(Td, R, q_traj(i-1, :), true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
                 end
             case 2 % Función de Robotics Toolbox 'ikine'
                 q = R.ikine(Td, 'mask', [1 1 1 0 0 0]); % Evita la rotación en Td
@@ -178,8 +178,8 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_izq(R, Cin_Inv,trayect
             otherwise
                 error('Valor de Cin_Inv no válido. Use 1, 2 o 3.')
         end
-        q(6)=0;
-        q(4)=90*pi/180;
+        %q(6)=0;
+        %q(4)=90*pi/180;
         % Corregir la configuración articular para evitar singularidades
         if q(5)*180/pi < 1 && q(5)*180/pi > -1
             disp('Singularidad en q5')	
@@ -255,7 +255,7 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_der(R, Cin_Inv,trayect
         q(6)=0; % fijo q6
         q(4)=-90*pi/180; % fijo q4
 
-        disp((q*180/pi)')
+        %disp((q*180/pi)')
         % if abs(det(R.jacob0(q)))<1e-4
         %     disp('Singularidad--------------------------------------------')
         %     % q(5)=-q(5);
