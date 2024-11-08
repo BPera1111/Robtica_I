@@ -5,7 +5,9 @@ function esp_trabajo; clc; clear; close all;
     cont = 2;
     for q = rango(1):5:rango(2)
         q_kuka_16(1)=q*pi/180;
+
         T = R.fkine(q_kuka_16);
+        
         T = T.T;
         coord_xy(:,cont) = [T(1:2,4)];
         cont = cont + 1;

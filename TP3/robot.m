@@ -19,7 +19,7 @@ function robot; clc; clear ; close all; %#ok<*CLEAR0ARGS,*NOPTS,*INUSD>
 
     base = trotz(-45);
     %base = eye(4);
-    path = fullfile(pwd,'STL','KR16_2');
+    path = fullfile(pwd,'..','STL','KR16_2');
     % figure('name', 'Kuka 16');
     workspace = [-2 2 -2 2 -1 2.5];
     R=create_robot(dh_kuka_16, 'Kuka 16', q_kuka_16, qlim_kuka_16, offet, base,path,workspace);
@@ -34,7 +34,7 @@ function R =create_robot(dh, name, q, qlim, offset,base,path,workspace)
     R.base = base;
     %Agregar tool
     % R.tool = transl(.2, .2, 0);
-    % R.tool = transl(0,0,.2)*trotz(pi/2);
+    %R.tool = transl(0,0,.2)*trotz(pi/2);
     R.offset = offset;
     R.qlim = qlim;
     %R.plot(q, 'scale', 0.8, 'trail', {'r', 'LineWidth', 2}, 'workspace', workspace);

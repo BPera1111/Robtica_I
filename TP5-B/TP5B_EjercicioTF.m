@@ -10,7 +10,7 @@ function [Q,qq] = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
 
     %Eliminación de offsets --------------------------------------------------
     offsets_OLD = R.offset;
-    R.offset = zeros(6,1);
+    R.offset = zeros(6,1);A
 
     %Punto (x,y,z) de la muñeca ----------------------------------------------
     p = T(1:3,4) - R.links(6).d * T(1:3,3);
