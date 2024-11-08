@@ -52,15 +52,15 @@ function [Q,qq] = TP5B_EjercicioTF(T, R, q_kuka_16, mejor);
         Qaux = qq - q_kuka_16' * ones(1,8);
         % Par de ponderación para el ángulo q4
         peso_q1 = 2;  % Ajusta este valor para controlar la importancia de q1
-        peso_q4 = 1;  % Ajusta este valor para controlar la importancia de q4
+        %peso_q4 = 1;  % Ajusta este valor para controlar la importancia de q4
         normas = zeros(1,8);
         for i = 1:8
             % Calcula la diferencia en q4 entre la solución actual y la configuración actual
             diferencia_q1 = abs(Qaux(1, i));
-            diferencia_q4 = abs(Qaux(4, i));
+            %diferencia_q4 = abs(Qaux(4, i));
             
             % Calcula la norma, ponderando la diferencia de q4
-            normas(i) = norm(Qaux(:, i)) + peso_q1 * diferencia_q1 + peso_q4 * diferencia_q4;
+            normas(i) = norm(Qaux(:, i)) + peso_q1 * diferencia_q1;% + peso_q4 * diferencia_q4;
         end
         [~, pos] = min(normas);
         Q = qq(:, pos);

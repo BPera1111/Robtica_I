@@ -244,7 +244,12 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_der(R, Cin_Inv,trayect
         % Selección de la función de cinemática inversa
         switch Cin_Inv
             case 1 % Función personalizada
-                q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                if i == 1
+                    q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                end
+                if i > 1
+                    q = TP5B_EjercicioTF(Td, R, q_traj(i-1, :), true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                end
             case 2 % Función de Robotics Toolbox 'ikine'
                 q = R.ikine(Td, 'mask', [1 1 1 0 0 0]); % Evita la rotación en Td
             case 3 % Función 'ikcon'
@@ -252,8 +257,8 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_der(R, Cin_Inv,trayect
             otherwise
                 error('Valor de Cin_Inv no válido. Use 1, 2 o 3.')
         end
-        q(6)=0; % fijo q6
-        q(4)=-90*pi/180; % fijo q4
+        % q(6)=0; % fijo q6
+        % q(4)=-90*pi/180; % fijo q4
 
         %disp((q*180/pi)')
         % if abs(det(R.jacob0(q)))<1e-4
@@ -273,11 +278,11 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_der(R, Cin_Inv,trayect
         end
         q_traj(i, :) = q; % Almacenar la configuración articular
 
-        if i > 2
-            if q_traj(i-2,5)*180/pi <0 && q_traj(i-1,5)*180/pi >0 && q_traj(i,5)*180/pi <0
-                q_traj(i-1,5) = -q_traj(i-1,5);
-            end
-        end
+        % if i > 2
+        %     if q_traj(i-2,5)*180/pi <0 && q_traj(i-1,5)*180/pi >0 && q_traj(i,5)*180/pi <0
+        %         q_traj(i-1,5) = -q_traj(i-1,5);
+        %     end
+        % end
 
     end
     
