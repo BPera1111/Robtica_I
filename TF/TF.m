@@ -127,6 +127,7 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_izq(R, Cin_Inv,trayect
         
         % Matriz de transformación deseada en el punto actual
         Td = [R_desired, [trayectoria_x(i); trayectoria_y(i); trayectoria_z(i)]; 0 0 0 1];
+        rpy=tr2rpy(Td)
         
         % Selección de la función de cinemática inversa
         switch Cin_Inv
