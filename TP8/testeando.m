@@ -32,7 +32,7 @@ tra_d = ejecutar_trayectoria_soldadura_alineada_der(Rd,1,tx_d,ty_d,tz_d,data,qi_
 % disp(tra_d*180/pi)
 
 %% interpolación articular izq y der
-q_td = []; q_vd = []; q_ad = []; points = 2;
+q_td = []; q_vd = []; q_ad = []; points = 10;
 for i = 1:size(tra_d, 1)-1
     [q_d, qd_d, qdd_d] = jtraj(tra_d(i,:), tra_d(i+1, :), points);
     q_td = [q_td; q_d];
