@@ -4,10 +4,10 @@ clc; clear; close all;
 % Cargar el robot guardado en kuka_16.mat
 
 Ri=RobotCI();
-Ri.base =  transl(0,-1.43,0);
+Ri.base =  transl(0,-1.35,0);
 
 Rd=RobotCI();
-Rd.base = transl(0,1.43,0);
+Rd.base = transl(0,1.35,0);
 % global path;
 % path = fullfile(pwd,'..','STL','KR16_2');
 
@@ -52,8 +52,8 @@ end
 % % Rd.plot3d(q_finald, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 % Ri.plot3d(q_ti, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
 
-% plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
-plotada(Rd,q_td,q_vd,q_ad,trayectoria_x,trayectoria_y,trayectoria_z)
+plotada(Ri,q_ti,q_vi,q_ai,trayectoria_x,trayectoria_y,trayectoria_z)
+% plotada(Rd,q_td,q_vd,q_ad,trayectoria_x,trayectoria_y,trayectoria_z)
 
 %% Guardar las trayectorias para no tener que calcularlas todo el tiempo
 % save('trayectorias.mat', 'tra_i', 'tra_d')
@@ -165,7 +165,12 @@ function q_traj = ejecutar_trayectoria_soldadura_alineada_izq(R, Cin_Inv,trayect
         % Selección de la función de cinemática inversa
         switch Cin_Inv
             case 1 % Función personalizada
-                q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                if i == 1
+                    q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                end
+                if i > 1
+                    q = TP5B_EjercicioTF(Td, R, q_traj(i-1, :), true) % Modificar 'zeros(6,1)' si deseas un q inicial específico
+                end
             case 2 % Función de Robotics Toolbox 'ikine'
                 q = R.ikine(Td, 'mask', [1 1 1 0 0 0]); % Evita la rotación en Td
             case 3 % Función 'ikcon'
