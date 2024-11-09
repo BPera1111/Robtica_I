@@ -1,5 +1,5 @@
 clc; clear; close all;%#ok<*NCOMMA,*ASGLU,*NASGU,*DEFNU,*INUSD,*AGROW>
-
+% para que funcione correctamente debera estar posicionado en la carpeta TF en la consola de matlab
 
 % Cargar el robot guardado en kuka_16.mat
 
@@ -8,8 +8,6 @@ Ri.base =  transl(0,-1.35,0);
 
 Rd=RobotCI();
 Rd.base = transl(0,1.35,0);
-% global path;
-% path = fullfile(pwd,'..','STL','KR16_2');
 
 [trayectoria_x trayectoria_y trayectoria_z] = graf_trayectoria(); 
 
@@ -25,30 +23,10 @@ qi_i = [0 0 0 0 0 0]*pi/180;
 qi_d = [0 0 0 0 0 0]*pi/180;
 
 disp('trayectoria izq')
-[tra_i vms_i] = ejecutar_trayectoria_soldadura_alineada_izq(Ri,1,tx_i,ty_i,tz_i,data,qi_i);
+[tra_i vms_i] = ejecutar_trayectoria_soldadura_alineada(Ri,1,tx_i,ty_i,tz_i,data,qi_i);
 
 disp('trayectoria der')
-[tra_d vms_d] = ejecutar_trayectoria_soldadura_alineada_izq(Rd,1,tx_d,ty_d,tz_d,data,qi_d);
-
-
-
-
-%% interpolación articular izq y der
-% q_td = []; q_vd = []; q_ad = []; points = 2;
-% for i = 1:size(tra_d, 1)-1
-%     [q_d, qd_d, qdd_d] = jtraj(tra_d(i,:), tra_d(i+1, :), points);
-%     q_td = [q_td; q_d];
-%     q_vd = [q_vd; qd_d];
-%     q_ad = [q_ad; qdd_d];
-% end
-% q_ti = []; q_vi = []; q_ai = [];
-% for i = 1:size(tra_i, 1)-1
-%     [q_i, qd_i, qdd_i] = jtraj(tra_i(i,:), tra_i(i+1, :), points);
-%     q_ti = [q_ti; q_i];
-%     q_vi = [q_vi; qd_i];
-%     q_ai = [q_ai; qdd_i];
-% end
-
+[tra_d vms_d] = ejecutar_trayectoria_soldadura_alineada(Rd,1,tx_d,ty_d,tz_d,data,qi_d);
 
 disp('Interpolación articular izq')
 [t_a_i v_a_i a_a_i] = inter_mstraj(Ri, vms_i);
@@ -58,14 +36,11 @@ disp('Interpolación articular der')
 plotada(Ri,t_a_i,v_a_i,a_a_i,trayectoria_x,trayectoria_y,trayectoria_z ,' Robot izquierdo')
 plotada(Rd,t_a_d,v_a_d,a_a_d,trayectoria_x,trayectoria_y,trayectoria_z, ' Robot derecho')
 
-
-
-
 function [traj_articular qd_num qdd_num] = inter_mstraj(R, vms)
     %% interpolación cartesiana izq y der con mstraj
     %% Parámetros de la trayectoria cartesiana
     vel = 0.1; % Velocidad máxima (puede ser un vector si se requiere diferente velocidad por dimensión)
-    dt = 0.01; % Intervalo de tiempo entre puntos
+    dt = 0.5; % Intervalo de tiempo entre puntos
     accel = 0.05; % Aceleración máxima
     q0 = vms(1, :);
 
@@ -90,7 +65,7 @@ function [traj_articular qd_num qdd_num] = inter_mstraj(R, vms)
     [row, col] = size(traj_articular);
     qd_num = zeros(size(traj_articular));
     qdd_num = zeros(size(traj_articular));
-    m = size(traj_articular, 1)
+    m = size(traj_articular, 1);
     for c = 1:col
         for r = 2:row-1
         qd_num(r,c) = (traj_articular(r+1,c) - traj_articular(r,c))*m; 
@@ -104,7 +79,6 @@ function [traj_articular qd_num qdd_num] = inter_mstraj(R, vms)
     end
 
 end
-
 
 function [tx ty tz]=graf_trayectoria()
     %Parámetros de la circunferencia
@@ -152,10 +126,8 @@ function [tx_d ty_d tz_d data]=tray_der()
     tx_d = zeros(1, num_puntos); % Coordenada X fija (plano YZ)
 end
 
-function [q_traj vms] = ejecutar_trayectoria_soldadura_alineada_izq(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data,q_inicial)
-
-    sing = false; 
-
+function [q_traj vms] = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data,q_inicial)
+    % Parámetros de la trayectoria circular
     radio = data(1); % Radio del tubo
     centro_y = data(2); % Centro en el eje Y
     centro_z = data(3); % Centro en el eje Z
@@ -202,105 +174,16 @@ function [q_traj vms] = ejecutar_trayectoria_soldadura_alineada_izq(R, Cin_Inv,t
     end
 end
 
-function q_traj = ejecutar_trayectoria_soldadura_alineada_der(R, Cin_Inv,trayectoria_x,trayectoria_y,trayectoria_z,data,q_inicial) 
-    sing = false;
-
-    radio = data(1); % Radio del tubo
-    centro_y = data(2); % Centro en el eje Y
-    centro_z = data(3); % Centro en el eje Z
-    num_puntos = data(4); % Número de puntos en la trayectoria
-    q_traj = zeros(num_puntos, R.n); % Almacenar todas las configuraciones articulares
-    % Iterar sobre cada punto de la trayectoria
-    for i = 1:num_puntos
-        % Calcula el vector de dirección hacia el centro del tubo
-        direccion = [trayectoria_x(i), centro_y - trayectoria_y(i), centro_z - trayectoria_z(i)];
-        direccion = direccion / norm(direccion); % Normalizar el vector
-        
-        % Calcular la matriz de rotación deseada
-        z_axis = direccion; % El eje Z del efector debe apuntar hacia el centro del tubo
-        x_axis = cross([0 0 1], z_axis); % Calcula el eje X ortogonal
-        x_axis = x_axis / norm(x_axis);
-        y_axis = cross(z_axis, x_axis); % Calcula el eje Y ortogonal
-        
-        % Construir la matriz de rotación deseada para el efector
-        R_desired = [x_axis; y_axis; z_axis]';
-        
-        % Matriz de transformación deseada en el punto actual
-        Td = [R_desired, [trayectoria_x(i); trayectoria_y(i); trayectoria_z(i)]; 0 0 0 1];
-        
-        % Selección de la función de cinemática inversa
-        switch Cin_Inv
-            case 1 % Función personalizada
-                if i == 1
-                    q = TP5B_EjercicioTF(Td, R, [0 0 0 0 0 0]*pi/180, true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
-                end
-                if i > 1
-                    q = TP5B_EjercicioTF(Td, R, q_traj(i-1, :), true); % Modificar 'zeros(6,1)' si deseas un q inicial específico
-                end
-            case 2 % Función de Robotics Toolbox 'ikine'
-                q = R.ikine(Td, 'mask', [1 1 1 0 0 0]); % Evita la rotación en Td
-            case 3 % Función 'ikcon'
-                q = R.ikcon(Td); % Puede ser más precisa pero más lenta
-            otherwise
-                error('Valor de Cin_Inv no válido. Use 1, 2 o 3.')
-        end
-        q_traj(i, :) = q; % Almacenar la configuración articular
-
-    end
-    
-end
-
-function mostrar_doble_trayectoria(Ri, Rd, traj_i, traj_d, tray_x, tray_y, tray_z)
-    % Crear la figura y establecer el espacio de trabajo
-    figure;
-    plot3(tray_x, tray_y, tray_z, 'b', 'LineWidth', 1.5); % Trayectoria del tubo
-    hold on;
-    
-    % Configurar el espacio de trabajo de los ejes
-    axis([-2 2 -2 2 0 2]); % Ajusta estos valores según el tamaño del espacio necesario
-    % axis equal;
-    
-    % Etiquetas y título
-    xlabel('X'); ylabel('Y'); zlabel('Z');
-    title('Simulación de Doble Robot con Trayectoria Circular');
-    
-    % Path para el modelo 3D de los robots
-    path = fullfile(pwd, '..', 'STL', 'KR16_2');
-    
-    % Número de puntos en la trayectoria
-    num_puntos = size(traj_i, 1);
-    
-    % Animar ambos robots
-    for i = 1:num_puntos
-        % Dibujar los robots en sus configuraciones actuales
-        Ri.plot3d(traj_i(i, :), 'path', path, 'notiles', 'nowrist', 'view', [90, 0], 'scale', 0.1);
-        Rd.plot3d(traj_d(i, :), 'path', path, 'notiles', 'nowrist', 'view', [90, 0], 'scale', 0.1);
-        
-        % Pausar para controlar la velocidad de la animación
-        % pause(0.05);
-    end
-    hold off;
-end
-
-function mostrar_simple_trayectoria(R,traj,tray_x,tray_y,tray_z)
-    for i=1:size(traj,1)
-        plot3(tray_x, tray_y, tray_z, 'b', 'LineWidth', 0.1); 
-        path = fullfile(pwd,'..','STL','KR16_2');
-        R.plot3d(traj(i, :), 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
-        % pause(0.05); % Controla la velocidad de la simulación
-    end
-end
-
 function plotada(R,q,v,a,cx,cy,cz,robot)
 
-    % figure();
-    % title(['Trayectoria circular en el plano YZ ' robot]);
-    % plot3(cx,cy,cz,'b','LineWidth',1.5);
-    % hold on;
-    % axis([-2 2 -2 2 0 2]);
-    % path = fullfile(pwd,'..','STL','KR16_2');
-    % R.plot3d(q, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
-    % hold off;
+    figure();
+    title(['Trayectoria circular en el plano YZ ' robot]);
+    plot3(cx,cy,cz,'b','LineWidth',1.5);
+    hold on;
+    axis([-2 2 -2 2 0 2]);
+    path = fullfile(pwd,'..','STL','KR16_2');
+    R.plot3d(q, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+    hold off;
 
     figure();
     title(['Posición' robot])
