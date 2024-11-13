@@ -29,23 +29,46 @@ disp('trayectoria der')
 [tra_d vms_d] = ejecutar_trayectoria_soldadura_alineada(Rd,1,tx_d,ty_d,tz_d,data,qi_d);
 
 disp('Interpolación articular izq')
-[t_a_i v_a_i a_a_i] = inter_mstraj(Ri, vms_i);
+[t_a_i v_a_i a_a_i t_xyzrpy_i] = inter_mstraj(Ri, vms_i);
 disp('Interpolación articular der')
-[t_a_d v_a_d a_a_d] = inter_mstraj(Rd, vms_d);
+[t_a_d v_a_d a_a_d t_xyzrpy_d] = inter_mstraj(Rd, vms_d);
+
+
+%% Guardar trayectorias velocidad y aceleración izq
+save('trayectoria_izq','t_xyzrpy_i','tra_i','vms_i','t_a_i','v_a_i','a_a_i','Ri')
+save('trayectoria_der','t_xyzrpy_d','tra_d','vms_d','t_a_d','v_a_d','a_a_d','Rd')
+
+% %% interpolación articular izq y der
+% q_td = []; q_vd = []; q_ad = []; points = 2;
+% % for i = 1:size(tra_d, 1)-1
+% %     [q_d, qd_d, qdd_d] = jtraj(tra_d(i,:), tra_d(i+1, :), points);
+% %     q_td = [q_td; q_d];
+% %     q_vd = [q_vd; qd_d];
+% %     q_ad = [q_ad; qdd_d];
+% % end
+% q_ti = []; q_vi = []; q_ai = [];
+% for i = 1:size(tra_i, 1)-1
+%     [q_i, qd_i, qdd_i] = jtraj(tra_i(i,:), tra_i(i+1, :), points);
+%     q_ti = [q_ti; q_i];
+%     q_vi = [q_vi; qd_i];
+%     q_ai = [q_ai; qdd_i];
+% end
 
 plotada(Ri,t_a_i,v_a_i,a_a_i,trayectoria_x,trayectoria_y,trayectoria_z ,' Robot izquierdo')
 plotada(Rd,t_a_d,v_a_d,a_a_d,trayectoria_x,trayectoria_y,trayectoria_z, ' Robot derecho')
 
-function [traj_articular qd_num qdd_num] = inter_mstraj(R, vms)
+function [traj_articular qd_num qdd_num traj_xyzrpy] = inter_mstraj(R, vms)
     %% interpolación cartesiana izq y der con mstraj
     %% Parámetros de la trayectoria cartesiana
-    vel = 0.1; % Velocidad máxima (puede ser un vector si se requiere diferente velocidad por dimensión)
-    dt = 0.5; % Intervalo de tiempo entre puntos
-    accel = 0.05; % Aceleración máxima
+    vel = [0.1 0.1 0.1]; % Velocidad máxima (puede ser un vector si se requiere diferente velocidad por dimensión)
+    dt = 2/10; % Intervalo de tiempo entre puntos
+    accel = 0.1; % Aceleración máxima
     q0 = vms(1, :);
+    tsegmet = ones(1, size(vms, 1))*2; % Duración de cada segmento en segundos
+    % tsegmet = 1;
 
     % Generar la trayectoria
-    traj_xyzrpy = mstraj(vms, vel, [], q0, dt, accel);
+    traj_xyzrpy = mstraj(vms, [], tsegmet, q0, dt, accel);
 
     traj_articular = zeros(size(traj_xyzrpy, 1), R.n);
     for i = 1:size(traj_xyzrpy, 1)
@@ -85,7 +108,7 @@ function [tx ty tz]=graf_trayectoria()
     radio = 0.15; % Radio de la circunferencia
     centro_y = 0; % Centro de la circunferencia en el eje Y
     centro_z = 1.1; % Centro de la circunferencia en el eje Z
-    num_puntos = 100; % Número de puntos en la circunferencia
+    num_puntos = 20; % Número de puntos en la circunferencia
 
     % Generar puntos de la circunferencia en el plano YZ
     theta = linspace(0, 2*pi, num_puntos); % Ángulos de la circunferencia
@@ -99,7 +122,7 @@ function [tx_i ty_i tz_i data]=tray_izq()
     radio = 0.2; % Radio del tubo
     centro_y = 0; % Centro en el eje Y
     centro_z = 1.1; % Centro en el eje Z
-    num_puntos = 100; % Número de puntos en la trayectoria
+    num_puntos = 10; % Número de puntos en la trayectoria
     data = [radio centro_y centro_z num_puntos];
     
     % Generación de puntos de la trayectoria circular en el plano YZ
@@ -115,7 +138,7 @@ function [tx_d ty_d tz_d data]=tray_der()
     radio = 0.2; % Radio del tubo
     centro_y = 0; % Centro en el eje Y
     centro_z = 1.1; % Centro en el eje Z
-    num_puntos = 100; % Número de puntos en la trayectoria
+    num_puntos = 10; % Número de puntos en la trayectoria
     data = [radio centro_y centro_z num_puntos];
     
     % Generación de puntos de la trayectoria circular en el plano YZ
@@ -151,7 +174,9 @@ function [q_traj vms] = ejecutar_trayectoria_soldadura_alineada(R, Cin_Inv,traye
         
         % Matriz de transformación deseada en el punto actual
         Td = [R_desired, [trayectoria_x(i); trayectoria_y(i); trayectoria_z(i)]; 0 0 0 1];
+
         rpy=tr2rpy(Td);
+
         vms(i,:) = [trayectoria_x(i), trayectoria_y(i), trayectoria_z(i), rpy(1), rpy(2), rpy(3)];
         
         % Selección de la función de cinemática inversa
@@ -178,34 +203,38 @@ function plotada(R,q,v,a,cx,cy,cz,robot)
 
     figure();
     title(['Trayectoria circular en el plano YZ ' robot]);
-    plot3(cx,cy,cz,'b','LineWidth',1.5);
+    % plot3(cx,cy,cz,'b','LineWidth',1.5);
     hold on;
     axis([-2 2 -2 2 0 2]);
     path = fullfile(pwd,'..','STL','KR16_2');
-    R.plot3d(q, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1);
+    R.plot3d(q, 'path',path,'notiles', 'nowrist','view',[90,0], 'scale', 0.1,'trail',{'r'});
     hold off;
 
-    figure();
-    title(['Posición' robot])
-    qplot(q)
-    ylabel('Posición (rad)')
-    xlabel('Tiempo (s)')
-    grid on
+    figure(); % Crear una sola figura
 
-
-    figure();
-    title(['Velocidad' robot])
-    qplot(v)
-    ylabel('Velocidad (rad/s)')
-    xlabel('Tiempo (s)')
-    grid on
-
-    figure();
-    title(['Aceleración' robot])
-    qplot(a)
-    ylabel('Aceleración (rad/s^2)')
-    xlabel('Tiempo (s)')
-    grid on
+    % Gráfico de posición
+    subplot(3, 1, 1); % Primer gráfico en una disposición de 3 filas y 1 columna
+    title(['Posición ' robot]);
+    qplot(q);
+    ylabel('Posición (rad)');
+    xlabel('Tiempo (s)');
+    grid on;
+    
+    % Gráfico de velocidad
+    subplot(3, 1, 2); % Segundo gráfico
+    title(['Velocidad ' robot]);
+    qplot(v);
+    ylabel('Velocidad (rad/s)');
+    xlabel('Tiempo (s)');
+    grid on;
+    
+    % Gráfico de aceleración
+    subplot(3, 1, 3); % Tercer gráfico
+    title(['Aceleración ' robot]);
+    qplot(a);
+    ylabel('Aceleración (rad/s^2)');
+    xlabel('Tiempo (s)');
+    grid on;
 end
 
 function T = homogenousTransform(X, Y, Z, roll, pitch, yaw)
