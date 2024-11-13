@@ -87,6 +87,37 @@ Rd.plot3d(t_a_d, 'path', path, 'notiles', 'nowrist', 'view', [100, 10], 'scale',
 % Ri.plot(t_a_i, 'trail', {'r', 'LineWidth', 1.5},scale=0.7);
 % Rd.plot(t_a_d, 'trail', {'r', 'LineWidth', 1.5},scale=0.7);
 
+plotada(Ri,t_a_i,v_a_i,a_a_i,'Robot Izquierdo');
+plotada(Rd,t_a_d,v_a_d,a_a_d,'Robot Derecho');
 
 hold off;
 
+function plotada(R,q,v,a,robot)
+
+
+      figure(); % Crear una sola figura
+  
+      % Gráfico de posición
+      subplot(3, 1, 1); % Primer gráfico en una disposición de 3 filas y 1 columna
+      title(['Posición ' robot]);
+      qplot(q);
+      ylabel('Posición (rad)');
+      xlabel('Tiempo (s)');
+      grid on;
+      
+      % Gráfico de velocidad
+      subplot(3, 1, 2); % Segundo gráfico
+      title(['Velocidad ' robot]);
+      qplot(v);
+      ylabel('Velocidad (rad/s)');
+      xlabel('Tiempo (s)');
+      grid on;
+      
+      % Gráfico de aceleración
+      subplot(3, 1, 3); % Tercer gráfico
+      title(['Aceleración ' robot]);
+      qplot(a);
+      ylabel('Aceleración (rad/s^2)');
+      xlabel('Tiempo (s)');
+      grid on;
+  end
